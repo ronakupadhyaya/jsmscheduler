@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Home from './Home';
+import Result from './Result';
+import Calendar from './Calendar';
+import GoogleCalendarInstructions from './GoogleCalendarInstructions';
+import ICalInstructions from './ICalInstructions';
+import Instructions from './Instructions';
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const { navigation } = this.props;
+    return (
+      <Router basename="/jsmscheduler">
+        <Route exact path="/" component={Home} />
+        <Route path="/search" component={Result} />
+        <Route path="/calendar" component={Calendar} />
+        <Route path="/instructions" component={Instructions} />
+      </Router>
+    );
+  }
 }
-
-export default App;
