@@ -2,9 +2,16 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
+const progressContainerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100vh',
+};
 
 export default class Calendar extends React.Component {
   constructor(props) {
@@ -17,8 +24,28 @@ export default class Calendar extends React.Component {
     }
   }
 
+  convertDateFormat = (input) => {
+    const year = input.substring(0, 4);
+    const month = input.substring(4, 6);
+    const day = input.substring(6, 8);
+    const hour = input.substring(9, 11);
+    const minute = input.substring(11, 13);
+    console.log(year, month, day);
+    const date = new Date(year, month - 1, day, hour, minute);
+    console.log(date);
+    return date;
+  }
+
   componentWillMount() {
-    const { authors } = this.props.location.state;
+    const authors = (this.props.location && this.props.location.state) ?
+    this.props.location.state.authors :
+    null;
+    if(!authors) {
+      this.setState({
+        loading: false,
+      });
+      return;
+    }
     fetch("http://citation-env.t9nubywtms.us-east-2.elasticbeanstalk.com/getSchedule", {
     method: 'POST',
     body: JSON.stringify({
@@ -35,22 +62,22 @@ export default class Calendar extends React.Component {
     speakerEvents = speakerEvents.map(event => {
       var newEvent = Object.assign({}, event);
       newEvent.color = '#2979ff';
-      newEvent.start = new Date(event.start);
-      newEvent.end = new Date(event.end);
+      newEvent.start = this.convertDateFormat(event.start);
+      newEvent.end = this.convertDateFormat(event.end);
       return newEvent;
     });
     authorEvents = authorEvents.map(event => {
       var newEvent = Object.assign({}, event);
       newEvent.color = '#00796b';
-      newEvent.start = new Date(event.start);
-      newEvent.end = new Date(event.end);
+      newEvent.start = this.convertDateFormat(event.start);
+      newEvent.end = this.convertDateFormat(event.end);
       return newEvent;
     });
     selfEvents = selfEvents.map(event => {
       var newEvent = Object.assign({}, event);
       newEvent.color = '#ff3d00';
-      newEvent.start = new Date(event.start);
-      newEvent.end = new Date(event.end);
+      newEvent.start = this.convertDateFormat(event.start);
+      newEvent.end = this.convertDateFormat(event.end);
       return newEvent;
     });
     this.setState({
@@ -84,8 +111,14 @@ export default class Calendar extends React.Component {
     const events = authorEvents.concat(speakerEvents).concat(selfEvents);
 
     if(loading) {
-      return false;
+      return (
+        <div style={progressContainerStyle}>
+          <CircularProgress />
+        </div>
+      );
     }
+
+    console.log(events);
 
     return (
       <BigCalendar

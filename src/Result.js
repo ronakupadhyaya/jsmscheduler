@@ -5,6 +5,7 @@ import SendIcon from '@material-ui/icons/Send';
 import Radio from '@material-ui/core/Radio';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const containerStyle = {
   display: 'flex',
@@ -60,6 +61,13 @@ const radioStyle = {
   color: '#FFFFFF',
 }
 
+const progressContainerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100vh',
+};
+
 const authors = [
   "Hui Zou",
   "Kenneth Lange",
@@ -76,13 +84,23 @@ const authors = [
 export default class Result extends React.Component {
   constructor(props) {
     super(props);
+    let name = null;
+    if(this.props.location.name) {
+      name = this.props.location.name;
+      localStorage.setItem('name', name);
+    }
+    else {
+      name = localStorage.getItem('name');
+    }
     this.state = {
       selected: 'Calendar View',
-      citingAuthors: [],
-      citedAuthors: [],
+      citingAuthors: JSON.parse(localStorage.getItem('citingAuthors')),
+      citedAuthors: JSON.parse(localStorage.getItem('citedAuthors')),
       others: [],
       loading: true,
+      name: name,
     }
+
   }
 
   setRadioButtonChange(radioButton) {
@@ -100,7 +118,14 @@ export default class Result extends React.Component {
 
 
   componentDidMount() {
-    const { name } = this.props.location;
+    const { name } = this.state;
+    if(this.state.citedAuthors && this.state.citedAuthors.length &&
+      this.state.citingAuthors && this.state.citingAuthors.length) {
+      this.setState({
+        loading: false,
+      });
+      return;
+    }
     fetch("http://citation-env.t9nubywtms.us-east-2.elasticbeanstalk.com/getAuthors?name=" + name)
     .then((response) => response.text())
     .then((responseText) => {
@@ -119,6 +144,9 @@ export default class Result extends React.Component {
         citedAuthors: citedAuthors,
         loading: false,
       });
+
+      localStorage.setItem('citingAuthors', JSON.stringify(citingAuthors));
+      localStorage.setItem('citedAuthors', JSON.stringify(citedAuthors));
     })
     .catch((error) => {
       console.log(error);
@@ -263,16 +291,24 @@ export default class Result extends React.Component {
       citedAuthorsItem,
       othersItem,
       loading,
+      name,
     } = this.state;
 
     if(loading) {
-      return null;
+      return (
+        <div style={progressContainerStyle}>
+          <CircularProgress />
+        </div>
+      );
     }
+    const header = (name && name !== 'undefined') ?
+    (name.split(" ")[0] + ', here are the people we think you\'d like to hear') :
+    ('Here are the people we think you\'d like to hear');
 
     return (
       <div style={containerStyle}>
         <div style={headerStyle}>
-          Here are the people we think you'd like to hear
+          {header}
         </div>
         <div style={listsStyle}>
           <div>
