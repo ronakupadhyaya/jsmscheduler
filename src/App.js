@@ -16,7 +16,7 @@ export default class App extends React.Component {
   render() {
     const { navigation } = this.props;
     return (
-      <Router basename="/jsmscheduler">
+      <Router>
         <Route exact path="/" component={Home} />
         <Route path="/search" component={Result} />
         <Route path="/calendar" component={Calendar} />
