@@ -2,7 +2,7 @@
   "name": "jsmscheduler",
   "version": "0.1.0",
   "private": true,
-  "homepage": "www.jsmscheduler.com",
+  "homepage": "https://jsmscheduler.com",
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
