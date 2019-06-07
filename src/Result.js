@@ -40,11 +40,11 @@ const listTitleStyle = {
 }
 
 const suggestionStyle = {
-  fontSize: 15,
+  fontSize: 20,
   fontWeight: 'semi-bold',
   textAlign: 'center',
   color: '#FFFFFF',
-  marginBottom: 15,
+  marginBottom: 25,
 }
 
 const footerStyle = {
@@ -63,40 +63,44 @@ const radioStyle = {
 
 const progressContainerStyle = {
   display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
   height: '100vh',
+  flexDirection: 'column',
+  alignItems: 'center',
 };
 
-const authors = [
-  "Hui Zou",
-  "Kenneth Lange",
-  "Sanjay Chaudhuri",
-  "Ryan Tibshirani",
-  "Elizaveta Levina",
-  "Jianqing Fan",
-  "Ming Yuan",
-  "Kshitij Khare",
-  "Ji Zhu",
-  "Mathias Drton",
-];
+const progressHeaderStyle = {
+  marginTop: 80,
+  fontSize: 20,
+  color: '#000000',
+  textAlign: 'center',
+  marginBottom: 50,
+}
 
 export default class Result extends React.Component {
   constructor(props) {
     super(props);
     let name = null;
-    if(this.props.location.name) {
+    let citedAuthors = null;
+    let citingAuthors = null;
+    let others = null;
+    if(this.props.location.previous && this.props.location.previous == 'home') {
       name = this.props.location.name;
+      citingAuthors = [];
+      citedAuthors = [];
+      others = [];
       localStorage.setItem('name', name);
     }
     else {
       name = localStorage.getItem('name');
+      citingAuthors = JSON.parse(localStorage.getItem('citingAuthors')) || [];
+      citedAuthors = JSON.parse(localStorage.getItem('citedAuthors')) || [];
+      others = JSON.parse(localStorage.getItem('others')) || [];
     }
     this.state = {
       selected: 'Calendar View',
-      citingAuthors: JSON.parse(localStorage.getItem('citingAuthors')),
-      citedAuthors: JSON.parse(localStorage.getItem('citedAuthors')),
-      others: [],
+      citingAuthors: citingAuthors,
+      citedAuthors: citedAuthors,
+      others: others,
       loading: true,
       name: name,
     }
@@ -119,41 +123,42 @@ export default class Result extends React.Component {
 
   componentDidMount() {
     const { name } = this.state;
-    if(this.state.citedAuthors && this.state.citedAuthors.length &&
-      this.state.citingAuthors && this.state.citingAuthors.length) {
-      this.setState({
-        loading: false,
+    if(this.props.location.previous && this.props.location.previous == 'home') {
+      fetch("http://citation-env.t9nubywtms.us-east-2.elasticbeanstalk.com/getAuthors?name=" + name)
+      .then((response) => response.text())
+      .then((responseText) => {
+        const json = JSON.parse(responseText);
+        var citedAuthors = json['Cited Authors'];
+        var citingAuthors = json['Citing Authors'];
+
+        citedAuthors = citedAuthors.map(author => author.name);
+        citedAuthors = citedAuthors.filter(author => !author.includes("null"));
+
+        citingAuthors = citingAuthors.map(author => author.name);
+        citingAuthors = citingAuthors.filter(author => !author.includes("null"));
+
+        this.setState({
+          citingAuthors: citingAuthors,
+          citedAuthors: citedAuthors,
+          loading: false,
+        });
+
+        localStorage.setItem('citingAuthors', JSON.stringify(citingAuthors));
+        localStorage.setItem('citedAuthors', JSON.stringify(citedAuthors));
+        localStorage.setItem('others', JSON.stringify([]));
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({
+          loading: false,
+        });
       });
-      return;
     }
-    fetch("http://citation-env.t9nubywtms.us-east-2.elasticbeanstalk.com/getAuthors?name=" + name)
-    .then((response) => response.text())
-    .then((responseText) => {
-      const json = JSON.parse(responseText);
-      var citedAuthors = json['Cited Authors'];
-      var citingAuthors = json['Citing Authors'];
-
-      citedAuthors = citedAuthors.map(author => author.name);
-      citedAuthors = citedAuthors.filter(author => !author.includes("null"));
-
-      citingAuthors = citingAuthors.map(author => author.name);
-      citingAuthors = citingAuthors.filter(author => !author.includes("null"));
-
-      this.setState({
-        citingAuthors: citingAuthors,
-        citedAuthors: citedAuthors,
-        loading: false,
-      });
-
-      localStorage.setItem('citingAuthors', JSON.stringify(citingAuthors));
-      localStorage.setItem('citedAuthors', JSON.stringify(citedAuthors));
-    })
-    .catch((error) => {
-      console.log(error);
+    else {
       this.setState({
         loading: false,
       });
-    });
+    }
   }
 
   generateSchedule = () => {
@@ -238,7 +243,8 @@ export default class Result extends React.Component {
       this.setState({
         citingAuthors: citingAuthors,
         citingAuthorsItem: '',
-      })
+      });
+      localStorage.setItem('citingAuthors', JSON.stringify(citingAuthors));
     }
     else if(type == 'Cited') {
       var citedAuthors = this.state.citedAuthors;
@@ -246,7 +252,8 @@ export default class Result extends React.Component {
       this.setState({
         citedAuthors: citedAuthors,
         citedAuthorsItem: '',
-      })
+      });
+      localStorage.setItem('citedAuthors', JSON.stringify(citedAuthors));
     }
     else {
       var others = this.state.others;
@@ -254,7 +261,8 @@ export default class Result extends React.Component {
       this.setState({
         others: others,
         othersItem: '',
-      })
+      });
+      localStorage.setItem('others', JSON.stringify(others));
     }
   }
 
@@ -297,6 +305,10 @@ export default class Result extends React.Component {
     if(loading) {
       return (
         <div style={progressContainerStyle}>
+          <div style={progressHeaderStyle}>
+            <p>Please wait while your personal talk recommendations are being generated.</p>
+            <p>This may take 30 seconds or so... but it's far less time than going through the entire JSM program book yourself!</p>
+          </div>
           <CircularProgress />
         </div>
       );
@@ -309,6 +321,10 @@ export default class Result extends React.Component {
       <div style={containerStyle}>
         <div style={headerStyle}>
           {header}
+        </div>
+        <div style={suggestionStyle}>
+          Feel free to edit these lists or add new names in 'Others'
+          before generating your schedule
         </div>
         <div style={listsStyle}>
           <div>
@@ -338,10 +354,6 @@ export default class Result extends React.Component {
             deleteItem={this.deleteItem}
             />
           </div>
-        </div>
-        <div style={suggestionStyle}>
-          Feel free to edit these lists or add new names in 'Others'
-          before generating your schedule
         </div>
         <div style={footerStyle}>
           <Button

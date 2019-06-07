@@ -110,7 +110,9 @@ export default class ICalInstructions extends React.Component {
         Import calendar to iCal
       </div>
       <div style={downloadStyle}>
-        Your download will begin shortly.
+      <p>Your download will begin shortly.</p>
+      <p>speakercalendar.ics contains talks where the person of interest is a speaker,
+      and authorcalendar.ics contains talks where the person of interest is a non-speaking author.</p>
       </div>
       <div style={paragraphStyle}>
         You can transfer your events from a different calendar application to iCal.

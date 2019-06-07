@@ -50,11 +50,11 @@ export default class Home extends React.Component {
   }
 
   onKeyDown = (key, value) => {
-    console.log(key, value);
     if (key === 'Enter') {
       this.props.history.push({
         pathname: '/search',
         name: value,
+        previous: 'home',
       });
     }
   }
@@ -69,7 +69,7 @@ export default class Home extends React.Component {
       </div>
         <div style={searchStyle}>
           <InputBase
-            placeholder="Your Name"
+            placeholder="Your Name (First Last)"
             disableUnderline={true}
             style={searchInputStyle}
             value={name}

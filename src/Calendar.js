@@ -50,6 +50,7 @@ export default class Calendar extends React.Component {
     method: 'POST',
     body: JSON.stringify({
       authors: authors,
+      name: localStorage.getItem('name'),
     })
   })
   .then((response) => response.text())
@@ -61,21 +62,21 @@ export default class Calendar extends React.Component {
     console.log(speakerEvents);
     speakerEvents = speakerEvents.map(event => {
       var newEvent = Object.assign({}, event);
-      newEvent.color = '#2979ff';
+      newEvent.color = '#ff3d00';
       newEvent.start = this.convertDateFormat(event.start);
       newEvent.end = this.convertDateFormat(event.end);
       return newEvent;
     });
     authorEvents = authorEvents.map(event => {
       var newEvent = Object.assign({}, event);
-      newEvent.color = '#00796b';
+      newEvent.color = '#ff00f2';
       newEvent.start = this.convertDateFormat(event.start);
       newEvent.end = this.convertDateFormat(event.end);
       return newEvent;
     });
     selfEvents = selfEvents.map(event => {
       var newEvent = Object.assign({}, event);
-      newEvent.color = '#ff3d00';
+      newEvent.color = '#2979ff';
       newEvent.start = this.convertDateFormat(event.start);
       newEvent.end = this.convertDateFormat(event.end);
       return newEvent;
