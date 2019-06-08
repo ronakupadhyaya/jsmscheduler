@@ -79,6 +79,7 @@ export default class Home extends React.Component {
           <Link to={{
             pathname: '/search',
             name: name,
+            previous: 'home',
           }}>
             <SearchIcon />
           </Link>

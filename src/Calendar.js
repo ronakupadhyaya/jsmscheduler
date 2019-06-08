@@ -30,9 +30,7 @@ export default class Calendar extends React.Component {
     const day = input.substring(6, 8);
     const hour = input.substring(9, 11);
     const minute = input.substring(11, 13);
-    console.log(year, month, day);
     const date = new Date(year, month - 1, day, hour, minute);
-    console.log(date);
     return date;
   }
 
@@ -59,7 +57,6 @@ export default class Calendar extends React.Component {
     var speakerEvents = json['Speaker'];
     var authorEvents = json['Author'];
     var selfEvents = json['Self'];
-    console.log(speakerEvents);
     speakerEvents = speakerEvents.map(event => {
       var newEvent = Object.assign({}, event);
       newEvent.color = '#ff3d00';
@@ -81,6 +78,9 @@ export default class Calendar extends React.Component {
       newEvent.end = this.convertDateFormat(event.end);
       return newEvent;
     });
+    authorEvents = authorEvents.filter(event => selfEvents.findIndex(selfEvent => selfEvent.title == event.title) == -1);
+    speakerEvents = speakerEvents.filter(event => selfEvents.findIndex(selfEvent => selfEvent.title == event.title) == -1);
+
     this.setState({
       speakerEvents: speakerEvents,
       authorEvents: authorEvents,
@@ -118,8 +118,6 @@ export default class Calendar extends React.Component {
         </div>
       );
     }
-
-    console.log(events);
 
     return (
       <BigCalendar
