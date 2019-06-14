@@ -20,6 +20,7 @@ export default class Calendar extends React.Component {
       speakerEvents: [],
       authorEvents: [],
       selfEvents: [],
+      chairEvents: [],
       loading: true,
     }
   }
@@ -57,9 +58,11 @@ export default class Calendar extends React.Component {
     var speakerEvents = json['Speaker'];
     var authorEvents = json['Author'];
     var selfEvents = json['Self'];
+    var chairEvents = json['Chair'];
     speakerEvents = speakerEvents.map(event => {
       var newEvent = Object.assign({}, event);
       newEvent.color = '#ff3d00';
+      newEvent.title = event.title + " (" + event.location + ")";
       newEvent.start = this.convertDateFormat(event.start);
       newEvent.end = this.convertDateFormat(event.end);
       return newEvent;
@@ -67,6 +70,7 @@ export default class Calendar extends React.Component {
     authorEvents = authorEvents.map(event => {
       var newEvent = Object.assign({}, event);
       newEvent.color = '#ff00f2';
+      newEvent.title = event.title + " (" + event.location + ")";
       newEvent.start = this.convertDateFormat(event.start);
       newEvent.end = this.convertDateFormat(event.end);
       return newEvent;
@@ -74,17 +78,34 @@ export default class Calendar extends React.Component {
     selfEvents = selfEvents.map(event => {
       var newEvent = Object.assign({}, event);
       newEvent.color = '#2979ff';
+      newEvent.title = event.title + " (" + event.location + ")";
+      newEvent.start = this.convertDateFormat(event.start);
+      newEvent.end = this.convertDateFormat(event.end);
+      return newEvent;
+    });
+    chairEvents = chairEvents.map(event => {
+      var newEvent = Object.assign({}, event);
+      newEvent.color = '#2979ff';
+      newEvent.title = event.title + " (" + event.location + ")";
       newEvent.start = this.convertDateFormat(event.start);
       newEvent.end = this.convertDateFormat(event.end);
       return newEvent;
     });
     authorEvents = authorEvents.filter(event => selfEvents.findIndex(selfEvent => selfEvent.title == event.title) == -1);
+    authorEvents = authorEvents.filter(event => chairEvents.findIndex(chairEvent => chairEvent.title == event.title) == -1);
     speakerEvents = speakerEvents.filter(event => selfEvents.findIndex(selfEvent => selfEvent.title == event.title) == -1);
+    speakerEvents = speakerEvents.filter(event => chairEvents.findIndex(chairEvent => chairEvent.title == event.title) == -1);
+
+    chairEvents = chairEvents.map(event => {
+      event.title = "Chair: " + event.title;
+      return event;
+    });
 
     this.setState({
       speakerEvents: speakerEvents,
       authorEvents: authorEvents,
       selfEvents: selfEvents,
+      chairEvents: chairEvents,
       loading: false,
     })
   })
@@ -108,8 +129,8 @@ export default class Calendar extends React.Component {
   };
 
   render() {
-    const { authorEvents, speakerEvents, selfEvents, loading } = this.state;
-    const events = authorEvents.concat(speakerEvents).concat(selfEvents);
+    const { authorEvents, speakerEvents, selfEvents, chairEvents, loading } = this.state;
+    const events = authorEvents.concat(speakerEvents).concat(selfEvents).concat(chairEvents);
 
     if(loading) {
       return (
