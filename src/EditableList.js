@@ -13,6 +13,7 @@ const containerStyle = {
   backgroundColor: 'white',
   marginLeft: 20,
   marginRight: 20,
+  border: '1px solid'
 }
 
 const listItemStyle = {

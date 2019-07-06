@@ -7,12 +7,14 @@ import Radio from '@material-ui/core/Radio';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import InputBase from '@material-ui/core/Input';
 
 const containerStyle = {
   display: 'flex',
   flexDirection: 'column',
   height: '100vh',
-  backgroundImage: "url('https://api.regonline.com/CustImages/290000/299570/104475878-DENVER_1.1910x1000_copy_2.jpg')",
+  // backgroundImage: "url('https://api.regonline.com/CustImages/290000/299570/104475878-DENVER_1.1910x1000_copy_2.jpg')",
+  color: '#000000',
   backgroundSize: 'cover',
   fontWeight: 'semi-bold',
   alignItems: 'center',
@@ -31,7 +33,8 @@ const containerStyleMobile = {
 const headerStyle = {
   marginTop: 50,
   fontSize: 50,
-  color: '#FFFFFF',
+  // color: '#FFFFFF',
+  color: '#000000',
   marginBottom: 25,
 }
 
@@ -62,7 +65,8 @@ const listTitleStyle = {
   fontSize: 15,
   fontWeight: 'semi-bold',
   textAlign: 'center',
-  color: '#FFFFFF',
+  // color: '#FFFFFF',
+  color: '#000000',
   marginBottom: 10,
 }
 
@@ -76,17 +80,20 @@ const listTitleStyleMobile = {
 }
 
 const suggestionStyle = {
+  marginTop: 20,
   fontSize: 20,
   fontWeight: 'semi-bold',
   textAlign: 'center',
-  color: '#FFFFFF',
+  // color: '#FFFFFF',
+  color: '#000000',
   marginBottom: 25,
 }
 
 const footerStyle = {
   display: 'flex',
   flexDirection: 'row',
-  color: '#FFFFFF',
+  // color: '#FFFFFF',
+  color: '#000000',
 }
 
 const footerStyleMobile = {
@@ -102,10 +109,13 @@ const footerStyleMobile = {
 
 const buttonStyle = {
   marginRight: 10,
+  backgroundColor: '#2761AA',
+  color: '#FFFFFF'
 }
 
 const radioStyle = {
-  color: '#FFFFFF',
+  // color: '#FFFFFF',
+  color: '#000000',
 }
 
 const progressContainerStyle = {
@@ -129,6 +139,39 @@ const progressHeaderStyleMobile = {
   color: '#000000',
   textAlign: 'center',
   marginBottom: 50,
+}
+
+const searchStyleContainer = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#2761AA',
+  height: 70,
+  padding: 25,
+  width: '100vw'
+}
+
+const searchStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  height: 50,
+  width: 800,
+  backgroundColor: '#FFFFFF',
+};
+
+const searchInputStyle = {
+  marginLeft: 10,
+  width: 750,
+}
+
+const searchButtonStyle = {
+  backgroundColor: '#2761AA',
+  fontSize: 10,
+  marginRight: 10,
+  marginLeft: 5,
+  color: '#FFFFFF'
 }
 
 export default class Result extends React.Component {
@@ -347,6 +390,7 @@ export default class Result extends React.Component {
       this.setState({
         citingAuthors: citingAuthors,
       });
+      localStorage.setItem('citingAuthors', JSON.stringify(citingAuthors));
     }
     else if(type == 'Cited') {
       var citedAuthors = this.state.citedAuthors;
@@ -354,6 +398,7 @@ export default class Result extends React.Component {
       this.setState({
         citedAuthors: citedAuthors,
       });
+      localStorage.setItem('citedAuthors', JSON.stringify(citedAuthors));
     }
     else if(type == 'Co') {
       var coAuthors = this.state.coAuthors;
@@ -361,6 +406,7 @@ export default class Result extends React.Component {
       this.setState({
         coAuthors: coAuthors,
       });
+      localStorage.setItem('coAuthors', JSON.stringify(coAuthors));
     }
     else {
       var others = this.state.others;
@@ -368,6 +414,7 @@ export default class Result extends React.Component {
       this.setState({
         others: others,
       });
+      localStorage.setItem('others', JSON.stringify(others));
     }
   }
 
@@ -508,8 +555,27 @@ export default class Result extends React.Component {
         </MediaQuery>
         <MediaQuery query="(min-device-width: 480px)">
           <div style={containerStyle}>
-            <div style={headerStyle}>
-              {header}
+            <div style={searchStyleContainer}>
+              <div style={searchStyle}>
+                <InputBase
+                  placeholder="Your Name (First Last)"
+                  disableUnderline={true}
+                  style={searchInputStyle}
+                  value={name}
+                  onChange={event => this.setNameState(event.target.value)}
+                  onKeyDown={event => this.onKeyDown(event.key, event.target.value)}
+                />
+                <Button
+                style={searchButtonStyle}
+                variant="contained"
+                size='medium'
+                onClick={() => this.search()}
+                >
+                  <div>
+                    Search
+                  </div>
+                </Button>
+              </div>
             </div>
             <div style={suggestionStyle}>
               Feel free to edit these lists or add new names in 'Others'
@@ -555,13 +621,12 @@ export default class Result extends React.Component {
             </div>
             <div style={footerStyle}>
               <Button
+              style={buttonStyle}
               variant="contained"
               size='medium'
               onClick={() => this.generateSchedule()}
               >
-                <div style={buttonStyle}>
-                  Generate my JSM schedule
-                </div>
+                Generate my JSM schedule
               </Button>
               <div>
               <Radio

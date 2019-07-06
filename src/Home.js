@@ -10,7 +10,7 @@ const containerStyle = {
   display: 'flex',
   flexDirection: 'column',
   height: '100vh',
-  backgroundImage: "url('https://api.regonline.com/CustImages/290000/299570/104475878-DENVER_1.1910x1000_copy_2.jpg')",
+  backgroundImage: "url('https://media-public.canva.com/MADGxtluwWE/4/screen_2x.jpg')",
   backgroundSize: 'cover',
   fontWeight: 'semi-bold',
   alignItems: 'center',
@@ -26,11 +26,14 @@ const containerStyleMobile = {
   alignItems: 'center',
 }
 
-const headerStyle = {
-  marginTop: 200,
-  fontSize: 70,
-  color: '#FFFFFF',
+const headerContainerStyle = {
+  marginTop: 250,
   marginBottom: 50,
+}
+
+const headerStyle = {
+  fontSize: 30,
+  color: '#FFFFFF',
 };
 
 const headerStyleMobile = {
@@ -45,7 +48,7 @@ const searchStyle = {
   flexDirection: 'row',
   alignItems: 'center',
   height: 50,
-  width: 500,
+  width: 800,
   backgroundColor: '#FFFFFF',
 };
 
@@ -61,7 +64,15 @@ const searchInputStyleMobile = {
 
 const searchInputStyle = {
   marginLeft: 10,
-  width: 450,
+  width: 750,
+}
+
+const buttonStyle = {
+  backgroundColor: '#2761AA',
+  fontSize: 12,
+  marginRight: 10,
+  marginLeft: 5,
+  color: '#FFFFFF'
 }
 
 const buttonStyleMobile = {
@@ -135,8 +146,10 @@ export default class Home extends React.Component {
       </MediaQuery>
       <MediaQuery query="(min-device-width: 480px)">
         <div style={containerStyle}>
-          <div style={headerStyle}>
-            Get your custom JSM schedule
+          <div style={headerContainerStyle}>
+            <div style={headerStyle}>
+              We’ll help you create a schedule that works for you.
+            </div>
           </div>
           <div style={searchStyle}>
             <InputBase
@@ -147,13 +160,16 @@ export default class Home extends React.Component {
               onChange={event => this.setNameState(event.target.value)}
               onKeyDown={event => this.onKeyDown(event.key, event.target.value)}
             />
-            <Link to={{
-              pathname: '/search',
-              name: name,
-              previous: 'home',
-            }}>
-              <SearchIcon />
-            </Link>
+            <Button
+            style={buttonStyle}
+            variant="contained"
+            size='medium'
+            onClick={() => this.search()}
+            >
+              <div>
+                Search
+              </div>
+            </Button>
           </div>
         </div>
       </MediaQuery>
