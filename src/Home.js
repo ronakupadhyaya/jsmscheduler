@@ -148,7 +148,7 @@ export default class Home extends React.Component {
         <div style={containerStyle}>
           <div style={headerContainerStyle}>
             <div style={headerStyle}>
-              We’ll help you create a schedule that works for you.
+              We’ll help you create a schedule that works for you
             </div>
           </div>
           <div style={searchStyle}>
