@@ -1,4 +1,5 @@
 import React from 'react';
+import MediaQuery from 'react-responsive';
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -11,6 +12,10 @@ const progressContainerStyle = {
   justifyContent: 'center',
   alignItems: 'center',
   height: '100vh',
+};
+
+const bigCalendarMobileStyle = {
+  margin: 10,
 };
 
 export default class Calendar extends React.Component {
@@ -141,16 +146,32 @@ export default class Calendar extends React.Component {
     }
 
     return (
-      <BigCalendar
-        events={events}
-        localizer={localizer}
-        style={{height: '100vh', width: '100vw'}}
-        step={60}
-        showMultiDayTimes
-        eventPropGetter={(this.eventStyleGetter)}
-        defaultView={'agenda'}
-        defaultDate={new Date(2019, 6, 26)}
-      />
+      <div>
+        <MediaQuery query="(max-device-width: 480px)">
+          <BigCalendar
+            style={bigCalendarMobileStyle}
+            events={events}
+            localizer={localizer}
+            step={60}
+            showMultiDayTimes
+            eventPropGetter={(this.eventStyleGetter)}
+            defaultView={'agenda'}
+            defaultDate={new Date(2019, 6, 26)}
+          />
+        </MediaQuery>
+        <MediaQuery query="(min-device-width: 480px)">
+          <BigCalendar
+            events={events}
+            localizer={localizer}
+            style={{height: '100vh', width: '100vw'}}
+            step={60}
+            showMultiDayTimes
+            eventPropGetter={(this.eventStyleGetter)}
+            defaultView={'agenda'}
+            defaultDate={new Date(2019, 6, 26)}
+          />
+        </MediaQuery>
+      </div>
     );
   }
 }

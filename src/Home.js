@@ -2,6 +2,7 @@ import React from 'react';
 import MediaQuery from 'react-responsive';
 import InputBase from '@material-ui/core/Input';
 import SearchIcon from '@material-ui/icons/Search';
+import Button from '@material-ui/core/Button';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 
@@ -14,6 +15,16 @@ const containerStyle = {
   fontWeight: 'semi-bold',
   alignItems: 'center',
 };
+
+const containerStyleMobile = {
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100vh',
+  backgroundImage: "url('https://api.regonline.com/CustImages/290000/299570/104475878-DENVER_1.1910x1000_copy_2.jpg')",
+  backgroundSize: 'cover',
+  fontWeight: 'semi-bold',
+  alignItems: 'center',
+}
 
 const headerStyle = {
   marginTop: 200,
@@ -53,6 +64,12 @@ const searchInputStyle = {
   width: 450,
 }
 
+const buttonStyleMobile = {
+  marginTop: 15,
+  backgroundColor: '#FFFFFF',
+  fontSize: 10,
+}
+
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -77,44 +94,67 @@ export default class Home extends React.Component {
     }
   }
 
+  search = () => {
+    const { name } = this.state;
+    this.props.history.push({
+      pathname: '/search',
+      name: name,
+      previous: 'home',
+    });
+  }
+
   render() {
     const { name } = this.state;
 
     return (
-      <div style={containerStyle}>
+    <div>
       <MediaQuery query="(max-device-width: 480px)">
-        <div style={headerStyleMobile}>
-          Get your custom JSM schedule
-        </div>
-        <InputBase
-          placeholder="Your Name (First Last)"
-          disableUnderline={true}
-          style={searchInputStyleMobile}
-          value={name}
-          onChange={event => this.setNameState(event.target.value)}
-          onKeyDown={event => this.onKeyDown(event.key, event.target.value)}
-        />
-      </MediaQuery>
-      <MediaQuery query="(min-device-width: 480px)">
-        <div style={headerStyle}>
-          Get your custom JSM schedule
-        </div>
-        <div style={searchStyle}>
+        <div style={containerStyleMobile}>
+          <div style={headerStyleMobile}>
+            Get your custom JSM schedule
+          </div>
           <InputBase
             placeholder="Your Name (First Last)"
             disableUnderline={true}
-            style={searchInputStyle}
+            style={searchInputStyleMobile}
             value={name}
             onChange={event => this.setNameState(event.target.value)}
             onKeyDown={event => this.onKeyDown(event.key, event.target.value)}
           />
-          <Link to={{
-            pathname: '/search',
-            name: name,
-            previous: 'home',
-          }}>
-            <SearchIcon />
-          </Link>
+          <Button
+          style={buttonStyleMobile}
+          variant="contained"
+          size='medium'
+          onClick={() => this.search()}
+          >
+            <div>
+              Search
+            </div>
+          </Button>
+        </div>
+      </MediaQuery>
+      <MediaQuery query="(min-device-width: 480px)">
+        <div style={containerStyle}>
+          <div style={headerStyle}>
+            Get your custom JSM schedule
+          </div>
+          <div style={searchStyle}>
+            <InputBase
+              placeholder="Your Name (First Last)"
+              disableUnderline={true}
+              style={searchInputStyle}
+              value={name}
+              onChange={event => this.setNameState(event.target.value)}
+              onKeyDown={event => this.onKeyDown(event.key, event.target.value)}
+            />
+            <Link to={{
+              pathname: '/search',
+              name: name,
+              previous: 'home',
+            }}>
+              <SearchIcon />
+            </Link>
+          </div>
         </div>
       </MediaQuery>
     </div>

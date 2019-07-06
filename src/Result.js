@@ -93,6 +93,7 @@ const footerStyleMobile = {
   display: 'flex',
   flexDirection: 'column',
   color: '#FFFFFF',
+  marginTop: 20,
   marginLeft: 20,
   marginRight: 20,
   marginBottom: 20,
@@ -117,6 +118,14 @@ const progressContainerStyle = {
 const progressHeaderStyle = {
   marginTop: 80,
   fontSize: 20,
+  color: '#000000',
+  textAlign: 'center',
+  marginBottom: 50,
+}
+
+const progressHeaderStyleMobile = {
+  marginTop: 80,
+  fontSize: 10,
   color: '#000000',
   textAlign: 'center',
   marginBottom: 50,
@@ -377,12 +386,25 @@ export default class Result extends React.Component {
 
     if(loading) {
       return (
-        <div style={progressContainerStyle}>
-          <div style={progressHeaderStyle}>
-            <p>Please wait while your personal talk recommendations are being generated.</p>
-            <p>This may take 30 seconds or so... but it's far less time than going through the entire JSM program book yourself!</p>
-          </div>
-          <CircularProgress />
+        <div>
+          <MediaQuery query="(max-device-width: 480px)">
+            <div style={progressContainerStyle}>
+              <div style={progressHeaderStyleMobile}>
+                <p>Please wait while your personal talk recommendations are being generated.</p>
+                <p>This may take 30 seconds or so... but it's far less time than going through the entire JSM program book yourself!</p>
+              </div>
+              <CircularProgress />
+            </div>
+          </MediaQuery>
+          <MediaQuery query="(min-device-width: 480px)">
+            <div style={progressContainerStyle}>
+              <div style={progressHeaderStyle}>
+                <p>Please wait while your personal talk recommendations are being generated.</p>
+                <p>This may take 30 seconds or so... but it's far less time than going through the entire JSM program book yourself!</p>
+              </div>
+              <CircularProgress />
+            </div>
+          </MediaQuery>
         </div>
       );
     }
