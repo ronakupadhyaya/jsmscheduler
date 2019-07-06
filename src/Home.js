@@ -1,4 +1,5 @@
 import React from 'react';
+import MediaQuery from 'react-responsive';
 import InputBase from '@material-ui/core/Input';
 import SearchIcon from '@material-ui/icons/Search';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
@@ -19,6 +20,13 @@ const headerStyle = {
   fontSize: 70,
   color: '#FFFFFF',
   marginBottom: 50,
+};
+
+const headerStyleMobile = {
+  marginTop: 100,
+  fontSize: 25,
+  color: '#FFFFFF',
+  marginBottom: 100,
 }
 
 const searchStyle = {
@@ -29,6 +37,16 @@ const searchStyle = {
   width: 500,
   backgroundColor: '#FFFFFF',
 };
+
+const searchInputStyleMobile = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  height: 25,
+  width: 350,
+  padding: 10,
+  backgroundColor: '#FFFFFF',
+}
 
 const searchInputStyle = {
   marginLeft: 10,
@@ -64,9 +82,23 @@ export default class Home extends React.Component {
 
     return (
       <div style={containerStyle}>
-      <div style={headerStyle}>
-        Get your custom JSM schedule
-      </div>
+      <MediaQuery query="(max-device-width: 480px)">
+        <div style={headerStyleMobile}>
+          Get your custom JSM schedule
+        </div>
+        <InputBase
+          placeholder="Your Name (First Last)"
+          disableUnderline={true}
+          style={searchInputStyleMobile}
+          value={name}
+          onChange={event => this.setNameState(event.target.value)}
+          onKeyDown={event => this.onKeyDown(event.key, event.target.value)}
+        />
+      </MediaQuery>
+      <MediaQuery query="(min-device-width: 480px)">
+        <div style={headerStyle}>
+          Get your custom JSM schedule
+        </div>
         <div style={searchStyle}>
           <InputBase
             placeholder="Your Name (First Last)"
@@ -83,7 +115,8 @@ export default class Home extends React.Component {
           }}>
             <SearchIcon />
           </Link>
-      </div>
+        </div>
+      </MediaQuery>
     </div>
     );
   }
