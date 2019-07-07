@@ -13,7 +13,6 @@ const containerStyle = {
   display: 'flex',
   flexDirection: 'column',
   height: '100vh',
-  // backgroundImage: "url('https://api.regonline.com/CustImages/290000/299570/104475878-DENVER_1.1910x1000_copy_2.jpg')",
   color: '#000000',
   backgroundSize: 'cover',
   fontWeight: 'semi-bold',
@@ -24,7 +23,6 @@ const containerStyleMobile = {
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
-  backgroundImage: "url('https://api.regonline.com/CustImages/290000/299570/104475878-DENVER_1.1910x1000_copy_2.jpg')",
   backgroundSize: 'cover',
   fontWeight: 'semi-bold',
   alignItems: 'center',
@@ -41,7 +39,8 @@ const headerStyle = {
 const headerStyleMobile = {
   marginTop: 50,
   fontSize: 25,
-  color: '#FFFFFF',
+  // color: '#FFFFFF',
+  color: '#000000',
   marginBottom: 30,
   paddingLeft: 5,
   paddingRight: 5,
@@ -75,7 +74,8 @@ const listTitleStyleMobile = {
   fontSize: 15,
   fontWeight: 'semi-bold',
   textAlign: 'center',
-  color: '#FFFFFF',
+  // color: '#FFFFFF',
+  color: '#000000',
   marginBottom: 10,
 }
 
@@ -99,7 +99,8 @@ const footerStyle = {
 const footerStyleMobile = {
   display: 'flex',
   flexDirection: 'column',
-  color: '#FFFFFF',
+  // color: '#FFFFFF',
+  color: '#000000',
   marginTop: 20,
   marginLeft: 20,
   marginRight: 20,
@@ -152,6 +153,17 @@ const searchStyleContainer = {
   width: '100vw'
 }
 
+const searchStyleContainerMobile = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#2761AA',
+  height: 40,
+  padding: 15,
+  width: '100vw'
+};
+
 const searchStyle = {
   display: 'flex',
   flexDirection: 'row',
@@ -161,10 +173,24 @@ const searchStyle = {
   backgroundColor: '#FFFFFF',
 };
 
+const searchStyleMobile = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  height: 40,
+  width: 350,
+  backgroundColor: '#FFFFFF',
+};
+
 const searchInputStyle = {
   marginLeft: 10,
   width: 750,
-}
+};
+
+const searchInputStyleMobile = {
+  marginLeft: 10,
+  width: 750,
+};
 
 const searchButtonStyle = {
   backgroundColor: '#2761AA',
@@ -172,7 +198,15 @@ const searchButtonStyle = {
   marginRight: 10,
   marginLeft: 5,
   color: '#FFFFFF'
-}
+};
+
+const searchButtonStyleMobile = {
+  backgroundColor: '#2761AA',
+  fontSize: 10,
+  marginRight: 10,
+  marginLeft: 5,
+  color: '#FFFFFF'
+};
 
 export default class Result extends React.Component {
   constructor(props) {
@@ -463,9 +497,28 @@ export default class Result extends React.Component {
       <div>
         <MediaQuery query="(max-device-width: 480px)">
           <div style={containerStyleMobile}>
-            <div style={headerStyleMobile}>
-              {header}
+          <div style={searchStyleContainerMobile}>
+            <div style={searchStyleMobile}>
+              <InputBase
+                placeholder="Your Name (First Last)"
+                disableUnderline={true}
+                style={searchInputStyleMobile}
+                value={name}
+                onChange={event => this.setNameState(event.target.value)}
+                onKeyDown={event => this.onKeyDown(event.key, event.target.value)}
+              />
+              <Button
+              style={searchButtonStyleMobile}
+              variant="contained"
+              size='medium'
+              onClick={() => this.search()}
+              >
+                <div>
+                  Search
+                </div>
+              </Button>
             </div>
+          </div>
             <div style={listsStyleMobile}>
               <div>
                 <div style={listTitleStyleMobile}>People who cite you a lot</div>
@@ -578,8 +631,7 @@ export default class Result extends React.Component {
               </div>
             </div>
             <div style={suggestionStyle}>
-              Feel free to edit these lists or add new names in 'Others'
-              before generating your schedule
+              Feel free to add or remove any names before generating your schedule
             </div>
             <div style={listsStyle}>
               <div>

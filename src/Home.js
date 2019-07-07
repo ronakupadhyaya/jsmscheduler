@@ -10,7 +10,7 @@ const containerStyle = {
   display: 'flex',
   flexDirection: 'column',
   height: '100vh',
-  backgroundImage: "url('https://media-public.canva.com/MADGxtluwWE/4/screen_2x.jpg')",
+  backgroundImage: "url('https://api.regonline.com/CustImages/290000/299570/104475878-DENVER_1.1910x1000_copy_2.jpg')",
   backgroundSize: 'cover',
   fontWeight: 'semi-bold',
   alignItems: 'center',
@@ -122,7 +122,7 @@ export default class Home extends React.Component {
       <MediaQuery query="(max-device-width: 480px)">
         <div style={containerStyleMobile}>
           <div style={headerStyleMobile}>
-            Get your custom JSM schedule
+            Get a custom JSM schedule
           </div>
           <InputBase
             placeholder="Your Name (First Last)"
@@ -148,7 +148,7 @@ export default class Home extends React.Component {
         <div style={containerStyle}>
           <div style={headerContainerStyle}>
             <div style={headerStyle}>
-              We’ll help you create a schedule that works for you
+              Get a custom JSM schedule
             </div>
           </div>
           <div style={searchStyle}>
