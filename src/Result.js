@@ -255,18 +255,48 @@ export default class Result extends React.Component {
     .replace(/^[^ ]/g,match=>(match.toUpperCase()));
   }
 
-
+  componentDidUpdate(prevProps, prevState) {
+    let name = null;
+    let citedAuthors = null;
+    let citingAuthors = null;
+    let coAuthors = null;
+    let others = null;
+    if(this.props.location.previous && this.props.location.previous == 'searchFirst' && this.props.location.name != prevProps.location.name) {
+      console.log('in');
+      let name = this.props.location.name;
+      let citedAuthors = [];
+      let citingAuthors = [];
+      let coAuthors = [];
+      let others = [];
+      localStorage.setItem('name', name);
+      this.setState({
+        selected: 'Calendar View',
+        citingAuthors: citingAuthors,
+        citedAuthors: citedAuthors,
+        coAuthors: coAuthors,
+        others: others,
+        loading: true,
+        name: name,
+      });
+      this.fetchAuthorData()
+    }
+  }
 
   componentDidMount() {
+    this.fetchAuthorData();
+  }
+
+  fetchAuthorData = () => {
     const { name } = this.state;
-    if(this.props.location.previous && this.props.location.previous == 'home') {
+    console.log(this.props.location.previous)
+    if(this.props.location.previous && (this.props.location.previous == 'home' || this.props.location.previous == 'searchFirst')) {
       fetch("http://citation-env.t9nubywtms.us-east-2.elasticbeanstalk.com/getAuthors?name=" + name)
       .then((response) => response.text())
       .then((responseText) => {
         const json = JSON.parse(responseText);
         var citedAuthors = json['Cited Authors'];
         var citingAuthors = json['Citing Authors'];
-        var coAuthors = json['Co Authors'];
+        var coAuthors = [];
 
         citedAuthors = citedAuthors.map(author => author.name);
         citedAuthors = citedAuthors.filter(author => !author.includes("null"));
@@ -450,6 +480,31 @@ export default class Result extends React.Component {
       });
       localStorage.setItem('others', JSON.stringify(others));
     }
+  }
+
+  setNameState = (value) => {
+    this.setState({
+      name: value,
+    })
+  }
+
+  onKeyDown = (key, value) => {
+    if (key === 'Enter') {
+      this.props.history.push({
+        pathname: '/search',
+        name: value,
+        previous: 'searchFirst',
+      });
+    }
+  }
+
+  search = () => {
+    const { name } = this.state;
+    this.props.history.push({
+      pathname: '/search',
+      name: name,
+      previous: 'searchFirst',
+    });
   }
 
   render() {

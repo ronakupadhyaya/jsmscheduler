@@ -84,7 +84,7 @@ export default class GoogleCalendarInstructions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 'Open Google Calendar'
+      step: 'Introduction'
     }
   }
 
