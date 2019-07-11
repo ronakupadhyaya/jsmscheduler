@@ -5,6 +5,46 @@ import step2 from './gcstep2.png';
 import step3 from './gcstep3.png';
 import step4 from './gcstep4.png';
 
+class SideBar extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          height: '100vh',
+          width: '20%',
+          marginLeft: 40
+        }}
+      >
+        <div
+          style={{
+            marginTop: 10,
+            marginBottom: 10,
+            fontSize: 20,
+          }}
+        >
+          Step 1
+        </div>
+        <div
+          style={{
+            marginTop: 10,
+            marginBottom: 10,
+            fontSize: 20,
+          }}
+        >
+          Step 2
+        </div>
+      </div>
+    );
+  }
+}
+
 const containerStyle = {
   display: 'flex',
   flexDirection: 'column',
@@ -83,6 +123,9 @@ const stepThreeImageStyleMobile = {
 export default class GoogleCalendarInstructions extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      step: 'introduction'
+    }
   }
 
   componentWillMount() {
@@ -189,56 +232,11 @@ export default class GoogleCalendarInstructions extends React.Component {
       </MediaQuery>
       <MediaQuery query="(min-device-width: 480px)">
         <div style={containerStyle}>
+        <SideBar />
           <div style={headerStyle}>
             Import calendar to Google Calendar
           </div>
-          <div style={downloadStyle}>
-            <p>Your download will begin shortly.</p>
-            <p>speakercalendar.ics contains talks where the person of interest is a speaker</p>
-            <p>authorcalendar.ics contains talks where the person of interest is a non-speaking author</p>
-          </div>
-          <div style={paragraphStyle}>
-            You can transfer your events from a different calendar application or Google Account to Google Calendar.
-          </div>
 
-          <div style={stepHeaderStyle}>
-            Step 1: Open Google Calendar
-          </div>
-          <div style={paragraphStyle}>
-            Navigate to calendar.google.com
-          </div>
-
-          <div style={stepHeaderStyle}>
-            Step 2: Add other calendars
-          </div>
-          <div style={paragraphStyle}>
-            Click on the '+' next other 'Other Calendar' on the left sidebar
-          </div>
-          <img style={stepOneImageStyle} src={step1} />
-
-          <div style={stepHeaderStyle}>
-            Step 3: Select Import
-          </div>
-          <div style={paragraphStyle}>
-            Click on the 'Import' option from the pop-up
-          </div>
-          <img style={stepTwoImageStyle} src={step2} />
-
-          <div style={stepHeaderStyle}>
-            Step 4: Select Calendar
-          </div>
-          <div style={paragraphStyle}>
-            Click on 'Select file from your computer' and browse to locate the calendar .ics file to import.
-          </div>
-          <img style={stepThreeImageStyle} src={step3} />
-
-          <div style={stepHeaderStyle}>
-            Step 5: Import
-          </div>
-          <div style={paragraphStyle}>
-            Click on the 'Import' button
-          </div>
-          <img style={stepThreeImageStyle} src={step4} />
         </div>
       </MediaQuery>
     </div>
