@@ -88,7 +88,6 @@ export default class ICalInstructions extends React.Component {
   }
 
   componentWillMount() {
-    return;
     const { authors } = this.props;
     fetch("http://citation-env.t9nubywtms.us-east-2.elasticbeanstalk.com/getSpeakerCalendar", {
       method: 'POST',
