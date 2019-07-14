@@ -3,8 +3,12 @@ import MediaQuery from 'react-responsive';
 import InputBase from '@material-ui/core/Input';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
+import Autosuggest from 'react-autosuggest';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
+import MenuItem from '@material-ui/core/MenuItem';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-
+import { attendees } from './attendees';
 
 const containerStyle = {
   display: 'flex',
@@ -37,10 +41,10 @@ const headerStyle = {
 };
 
 const headerStyleMobile = {
-  marginTop: 180,
+  marginTop: 150,
   fontSize: 25,
   color: '#FFFFFF',
-  marginBottom: 100,
+  marginBottom: 50,
 }
 
 const searchStyle = {
@@ -50,6 +54,7 @@ const searchStyle = {
   height: 50,
   width: 800,
   backgroundColor: '#FFFFFF',
+  fontSize: 20
 };
 
 const searchInputStyleMobile = {
@@ -72,13 +77,15 @@ const buttonStyle = {
   fontSize: 12,
   marginRight: 10,
   marginLeft: 5,
-  color: '#FFFFFF'
+  color: '#FFFFFF',
+  height: 30,
 }
 
 const buttonStyleMobile = {
   marginTop: 15,
   backgroundColor: '#FFFFFF',
   fontSize: 10,
+  height: 25
 }
 
 export default class Home extends React.Component {
@@ -86,6 +93,7 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       name: '',
+      suggestions: [],
     }
   }
 
@@ -114,8 +122,120 @@ export default class Home extends React.Component {
     });
   }
 
+  onChange = (event, { newValue }) => {
+    this.setState({
+      name: newValue
+    });
+  };
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: this.getSuggestions(value)
+    });
+  };
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
+
+  getSuggestions = value => {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+
+    return inputLength === 0 ? [] : attendees.filter(attendee =>
+      attendee.toLowerCase().includes(inputValue)
+    );
+  };
+
+  getSuggestionValue = suggestion => suggestion;
+
+  renderSuggestion = (suggestion, { query, isHighlighted }) => {
+    const matches = match(suggestion, query);
+    const parts = parse(suggestion, matches);
+
+    return (
+      <MenuItem selected={isHighlighted}>
+        <div>
+          {parts.map(part => (
+            <span key={part.text} style={{ fontWeight: part.highlight ? 500 : 100 }}>
+              {part.text}
+            </span>
+          ))}
+        </div>
+      </MenuItem>
+    );
+  };
+
+  renderInputComponent = inputProps => (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
+        width: 800,
+      }}
+    >
+      <input
+        {...inputProps}
+      />
+      <Button
+      style={buttonStyle}
+      variant="contained"
+      size='medium'
+      onClick={() => this.search()}
+      >
+        <div>
+          Search
+        </div>
+      </Button>
+    </div>
+  );
+
+  renderInputComponentMobile = inputProps => (
+    <div
+      style={{
+        backgroundColor: '#FFFFFF'
+      }}
+    >
+      <input
+        {...inputProps}
+      />
+    </div>
+  );
+
   render() {
-    const { name } = this.state;
+    const { name, suggestions } = this.state;
+
+    const inputProps = {
+      placeholder: 'Your Name (First Last)',
+      value: name,
+      onChange: this.onChange,
+      onKeyDown: event => this.onKeyDown(event.key, event.target.value),
+      style: {
+        height: 50,
+        width: 700,
+        fontSize: 15,
+        paddingLeft: 10,
+        border: 'none'
+      }
+    };
+
+    const inputPropsMobile = {
+      placeholder: 'Your Name (First Last)',
+      value: name,
+      onChange: this.onChange,
+      onKeyDown: event => this.onKeyDown(event.key, event.target.value),
+      style: {
+        height: 30,
+        width: 350,
+        fontSize: 10,
+        paddingLeft: 10,
+        border: 'none'
+      }
+    };
 
     return (
     <div>
@@ -124,13 +244,48 @@ export default class Home extends React.Component {
           <div style={headerStyleMobile}>
             Get a custom JSM schedule
           </div>
-          <InputBase
-            placeholder="Your Name (First Last)"
-            disableUnderline={true}
-            style={searchInputStyleMobile}
-            value={name}
-            onChange={event => this.setNameState(event.target.value)}
-            onKeyDown={event => this.onKeyDown(event.key, event.target.value)}
+          <Autosuggest
+            suggestions={suggestions.slice(0, 5)}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={this.getSuggestionValue}
+            renderInputComponent={this.renderInputComponentMobile}
+            renderSuggestion={this.renderSuggestion}
+            inputProps={inputPropsMobile}
+            theme={{
+              inputFocused: {
+                border: 'none'
+              },
+              root: {
+                height: 250,
+                flexGrow: 1,
+              },
+              container: {
+                position: 'relative',
+              },
+              suggestionsContainer: {
+                zIndex: 1,
+                marginTop: 1,
+                left: 0,
+                right: 0,
+                backgroundColor: '#FFFFFF',
+                fontFamily: 'sans-serif',
+                borderLeft: '1px solid #000000',
+                borderRight: '1px solid #000000',
+                borderBottom: '1px solid #000000'
+              },
+              suggestion: {
+                display: 'block',
+              },
+              suggestionsList: {
+                margin: 0,
+                padding: 0,
+                listStyleType: 'none',
+              },
+              divider: {
+                height: 2,
+              },
+            }}
           />
           <Button
           style={buttonStyleMobile}
@@ -151,25 +306,58 @@ export default class Home extends React.Component {
               Get your custom JSM schedule
             </div>
           </div>
-          <div style={searchStyle}>
-            <InputBase
-              placeholder="Your Name (First Last)"
-              disableUnderline={true}
-              style={searchInputStyle}
-              value={name}
-              onChange={event => this.setNameState(event.target.value)}
-              onKeyDown={event => this.onKeyDown(event.key, event.target.value)}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: 700,
+            }}
+          >
+            <Autosuggest
+              suggestions={suggestions.slice(0, 5)}
+              onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+              onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+              getSuggestionValue={this.getSuggestionValue}
+              renderInputComponent={this.renderInputComponent}
+              renderSuggestion={this.renderSuggestion}
+              inputProps={inputProps}
+              theme={{
+                inputFocused: {
+                  border: 'none'
+                },
+                root: {
+                  height: 250,
+                  flexGrow: 1,
+                },
+                container: {
+                  position: 'relative',
+                },
+                suggestionsContainer: {
+                  position: 'absolute',
+                  zIndex: 1,
+                  marginTop: 1,
+                  left: 0,
+                  right: 0,
+                  backgroundColor: '#FFFFFF',
+                  fontFamily: 'sans-serif',
+                  borderLeft: '1px solid #000000',
+                  borderRight: '1px solid #000000',
+                  borderBottom: '1px solid #000000'
+                },
+                suggestion: {
+                  display: 'block',
+                },
+                suggestionsList: {
+                  margin: 0,
+                  padding: 0,
+                  listStyleType: 'none',
+                },
+                divider: {
+                  height: 2,
+                },
+              }}
             />
-            <Button
-            style={buttonStyle}
-            variant="contained"
-            size='medium'
-            onClick={() => this.search()}
-            >
-              <div>
-                Search
-              </div>
-            </Button>
           </div>
         </div>
       </MediaQuery>
