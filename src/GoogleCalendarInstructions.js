@@ -4,6 +4,14 @@ import step1 from './gcstep1.png';
 import step2 from './gcstep2.png';
 import step3 from './gcstep3.png';
 import step4 from './gcstep4.png';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import MobileStepper from '@material-ui/core/MobileStepper';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import Typography from '@material-ui/core/Typography';
+
+const steps = ['Introduction', 'Open Google Calendar', 'Add Other Calendars', 'Select Import', 'Select Calendar', 'Import'];
 
 const containerStyle = {
   display: 'flex',
@@ -90,6 +98,7 @@ export default class GoogleCalendarInstructions extends React.Component {
 
   componentWillMount() {
     const { authors } = this.props;
+    return;
     fetch("http://citation-env.t9nubywtms.us-east-2.elasticbeanstalk.com/getSpeakerCalendar", {
       method: 'POST',
       body: JSON.stringify({
@@ -157,7 +166,7 @@ export default class GoogleCalendarInstructions extends React.Component {
           <div>
             <p style={{ fontWeight: 'bold', fontSize: 25 }}>
               <span style={{ borderBottom: '1px solid black', paddingBottom: 2, marginRight: 5 }}>1 </span>
-              Summary
+              Introduction
             </p>
           </div>
           <div
@@ -373,10 +382,162 @@ export default class GoogleCalendarInstructions extends React.Component {
     }
   }
 
+  renderContentMobile = () => {
+    const { step } = this.state;
+    if(step == 'Introduction') {
+      return (
+        <div
+          style={{
+            marginBottom: 10
+          }}
+        >
+          <div>
+            <p style={{ fontWeight: 'bold', fontSize: 25 }}>
+              <span style={{ borderBottom: '1px solid black', paddingBottom: 2, marginRight: 5 }}>1 </span>
+              Introduction
+            </p>
+          </div>
+          <div
+            style={{
+              color: '#696868'
+            }}
+          >
+            <p>Your download will begin shortly.</p>
+            <p>speakercalendar.ics contains talks where the person of interest is a speaker</p>
+            <p>authorcalendar.ics contains talks where the person of interest is a non-speaking author</p>
+            <p>You can transfer your events from a different calendar application or Google Account to Google Calendar.</p>
+          </div>
+        </div>
+      );
+    }
+    else if(step == 'Open Google Calendar') {
+      return (
+        <div
+          style={{
+            marginBottom: 10
+          }}
+        >
+          <div>
+            <p style={{ fontWeight: 'bold', fontSize: 25 }}>
+              <span style={{ borderBottom: '1px solid black', paddingBottom: 2, marginRight: 5 }}>2 </span>
+              Open Google Calendar
+            </p>
+          </div>
+          <div
+            style={{
+              color: '#696868'
+            }}
+          >
+            Navigate to calendar.google.com
+          </div>
+        </div>
+      );
+    }
+    else if(step == 'Add Other Calendars') {
+      return (
+        <div
+          style={{
+            marginBottom: 10
+          }}
+        >
+          <div>
+            <p style={{ fontWeight: 'bold', fontSize: 25 }}>
+              <span style={{ borderBottom: '1px solid black', paddingBottom: 2, marginRight: 5 }}>3 </span>
+              Add Other Calendars
+            </p>
+          </div>
+          <img style={stepOneImageStyleMobile} src={step1} />
+          <div
+            style={{
+              color: '#696868'
+            }}
+          >
+            Click on the '+' next other 'Other Calendar' on the left sidebar
+          </div>
+        </div>
+      );
+    }
+    else if(step == 'Select Import') {
+      return (
+        <div
+          style={{
+            marginBottom: 10
+          }}
+        >
+          <div>
+            <p style={{ fontWeight: 'bold', fontSize: 25 }}>
+              <span style={{ borderBottom: '1px solid black', paddingBottom: 2, marginRight: 5 }}>4 </span>
+              Select Import
+            </p>
+          </div>
+          <img style={stepTwoImageStyleMobile} src={step2} />
+          <div
+            style={{
+              color: '#696868'
+            }}
+          >
+            Click on the 'Import' option from the pop-up
+          </div>
+        </div>
+      );
+    }
+    else if(step == 'Select Calendar') {
+      return (
+        <div
+          style={{
+            marginBottom: 10
+          }}
+        >
+          <div>
+            <p style={{ fontWeight: 'bold', fontSize: 25 }}>
+              <span style={{ borderBottom: '1px solid black', paddingBottom: 2, marginRight: 5 }}>5 </span>
+              Select Calendar
+            </p>
+          </div>
+          <img style={stepThreeImageStyleMobile} src={step3} />
+          <div
+            style={{
+              color: '#696868'
+            }}
+          >
+            Click on 'Select file from your computer' and browse to locate the calendar .ics file to import
+          </div>
+        </div>
+      );
+    }
+    else if(step == 'Import') {
+      return (
+        <div
+          style={{
+            marginBottom: 10
+          }}
+        >
+          <div>
+            <p style={{ fontWeight: 'bold', fontSize: 25 }}>
+              <span style={{ borderBottom: '1px solid black', paddingBottom: 2, marginRight: 5 }}>6 </span>
+              Import
+            </p>
+          </div>
+          <img style={stepThreeImageStyleMobile} src={step4} />
+          <div
+            style={{
+              color: '#696868'
+            }}
+          >
+            Click on the 'Import' button
+          </div>
+        </div>
+      );
+    }
+    else {
+      return null;
+    }
+  }
+
   onClick = (step) => {
     this.setState({
       step: step
-    })
+    });
   }
 
   renderDiv = (step) => (
@@ -430,62 +591,53 @@ export default class GoogleCalendarInstructions extends React.Component {
     );
   }
 
+  handleNext = () => {
+    const { step } = this.state;
+    const activeStep = steps.indexOf(step);
+    this.setState({
+      step: steps[activeStep + 1]
+    });
+  }
+
+  handleBack = () => {
+    const { step } = this.state;
+    const activeStep = steps.indexOf(step);
+    this.setState({
+      step: steps[activeStep - 1]
+    });
+  }
+
   render() {
+    const { step } = this.state;
+    const maxSteps = steps.length;
+    const activeStep = steps.indexOf(step);
 
     return (
     <div>
       <MediaQuery query="(max-device-width: 480px)">
         <div style={containerStyleMobile}>
-          <div style={headerStyle}>
-            Import calendar to Google Calendar
-          </div>
-          <div style={downloadStyle}>
-            <p>Your download will begin shortly.</p>
-            <p>speakercalendar.ics contains talks where the person of interest is a speaker</p>
-            <p>authorcalendar.ics contains talks where the person of interest is a non-speaking author</p>
-          </div>
-          <div style={paragraphStyle}>
-            You can transfer your events from a different calendar application or Google Account to Google Calendar.
-          </div>
-
-          <div style={stepHeaderStyle}>
-            Step 1: Open Google Calendar
-          </div>
-          <div style={paragraphStyle}>
-            Navigate to calendar.google.com
-          </div>
-
-          <div style={stepHeaderStyle}>
-            Step 2: Add other calendars
-          </div>
-          <div style={paragraphStyle}>
-            Click on the '+' next other 'Other Calendar' on the left sidebar
-          </div>
-          <img style={stepOneImageStyleMobile} src={step1} />
-
-          <div style={stepHeaderStyle}>
-            Step 3: Select Import
-          </div>
-          <div style={paragraphStyle}>
-            Click on the 'Import' option from the pop-up
-          </div>
-          <img style={stepTwoImageStyleMobile} src={step2} />
-
-          <div style={stepHeaderStyle}>
-            Step 4: Select Calendar
-          </div>
-          <div style={paragraphStyle}>
-            Click on 'Select file from your computer' and browse to locate the calendar .ics file to import.
-          </div>
-          <img style={stepThreeImageStyleMobile} src={step3} />
-
-          <div style={stepHeaderStyle}>
-            Step 5: Import
-          </div>
-          <div style={paragraphStyle}>
-            Click on the 'Import' button
-          </div>
-          <img style={stepThreeImageStyleMobile} src={step4} />
+          {this.renderContentMobile()}
+          <MobileStepper
+            style={{
+              marginTop: 10
+            }}
+            steps={maxSteps}
+            position="static"
+            variant="text"
+            activeStep={steps.indexOf(step)}
+            nextButton={
+              <Button size="small" onClick={this.handleNext} disabled={activeStep === maxSteps - 1}>
+                Next
+                <KeyboardArrowRight />
+              </Button>
+            }
+            backButton={
+              <Button size="small" onClick={this.handleBack} disabled={activeStep === 0}>
+                <KeyboardArrowLeft />
+                Back
+              </Button>
+            }
+          />
         </div>
       </MediaQuery>
       <MediaQuery query="(min-device-width: 480px)">
