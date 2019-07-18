@@ -13,6 +13,12 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import MenuItem from '@material-ui/core/MenuItem';
 import { attendees } from './attendees';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const containerStyle = {
   display: 'flex',
@@ -245,6 +251,7 @@ export default class Result extends React.Component {
       loading: true,
       name: name,
       suggestions: [],
+      dialogOpen: false,
     }
 
   }
@@ -284,6 +291,7 @@ export default class Result extends React.Component {
         loading: true,
         name: name,
         suggestions: [],
+        dialogOpen: false,
       });
       this.fetchAuthorData()
     }
@@ -351,8 +359,8 @@ export default class Result extends React.Component {
     else if(selected == 'iCal') {
       this.openiCalInstructions();
     }
-    else {
-      this.openTextInstructions();
+    else if(selected == 'Email') {
+      this.openDialog();
     }
   }
 
@@ -611,6 +619,18 @@ export default class Result extends React.Component {
     </div>
   );
 
+  openDialog = () => {
+    this.setState({
+      dialogOpen: true
+    });
+  }
+
+  closeDialog = () => {
+    this.setState({
+      dialogOpen: false
+    });
+  }
+
   render() {
     const { selected,
       citingAuthors,
@@ -622,7 +642,8 @@ export default class Result extends React.Component {
       othersItem,
       loading,
       name,
-      suggestions
+      suggestions,
+      dialogOpen,
     } = this.state;
 
     const inputProps = {
@@ -781,30 +802,12 @@ export default class Result extends React.Component {
                 Calendar View
                 <Radio
                   style={radioStyle}
-                  checked={selected == 'Google Calendar'}
+                  checked={selected == 'Email'}
                   icon={<RadioButtonUncheckedIcon fontSize="small" />}
                   checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
-                  onChange={() => this.setRadioButtonChange('Google Calendar')}
+                  onChange={() => this.setRadioButtonChange('Email')}
                 />
-                Google Calendar
-              </div>
-              <div>
-                <Radio
-                  style={radioStyle}
-                  checked={selected == 'iCal'}
-                  icon={<RadioButtonUncheckedIcon fontSize="small" />}
-                  checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
-                  onChange={() => this.setRadioButtonChange('iCal')}
-                />
-                iCal
-                <Radio
-                  style={radioStyle}
-                  checked={selected == 'Text'}
-                  icon={<RadioButtonUncheckedIcon fontSize="small" />}
-                  checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
-                  onChange={() => this.setRadioButtonChange('Text')}
-                />
-                Text (.txt)
+                Email
               </div>
               <Button
               variant="contained"
@@ -815,6 +818,30 @@ export default class Result extends React.Component {
                   Generate my JSM schedule
                 </div>
               </Button>
+              <Dialog open={dialogOpen} onClose={this.closeDialog} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">JSM Schedule</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    To get your JSM schedule, please enter your email address here.
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Email Address"
+                    type="email"
+                    fullWidth
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.closeDialog} color="primary">
+                    Cancel
+                  </Button>
+                  <Button onClick={this.closeDialog} color="primary">
+                    OK
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </div>
           </div>
         </MediaQuery>
