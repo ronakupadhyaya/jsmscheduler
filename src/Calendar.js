@@ -96,10 +96,10 @@ export default class Calendar extends React.Component {
       newEvent.end = this.convertDateFormat(event.end);
       return newEvent;
     });
-    authorEvents = authorEvents.filter(event => selfEvents.findIndex(selfEvent => selfEvent.title == event.title) == -1);
-    authorEvents = authorEvents.filter(event => chairEvents.findIndex(chairEvent => chairEvent.title == event.title) == -1);
-    speakerEvents = speakerEvents.filter(event => selfEvents.findIndex(selfEvent => selfEvent.title == event.title) == -1);
-    speakerEvents = speakerEvents.filter(event => chairEvents.findIndex(chairEvent => chairEvent.title == event.title) == -1);
+    authorEvents = authorEvents.filter(event => selfEvents.findIndex(selfEvent => selfEvent.title === event.title) === -1);
+    authorEvents = authorEvents.filter(event => chairEvents.findIndex(chairEvent => chairEvent.title === event.title) === -1);
+    speakerEvents = speakerEvents.filter(event => selfEvents.findIndex(selfEvent => selfEvent.title === event.title) === -1);
+    speakerEvents = speakerEvents.filter(event => chairEvents.findIndex(chairEvent => chairEvent.title === event.title) === -1);
 
     chairEvents = chairEvents.map(event => {
       event.title = "Chair: " + event.title;

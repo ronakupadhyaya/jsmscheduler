@@ -1,13 +1,10 @@
 import React from 'react';
 import MediaQuery from 'react-responsive';
-import InputBase from '@material-ui/core/Input';
-import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import MenuItem from '@material-ui/core/MenuItem';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { attendees } from './attendees';
 
 const containerStyle = {
@@ -45,31 +42,6 @@ const headerStyleMobile = {
   fontSize: 25,
   color: '#FFFFFF',
   marginBottom: 50,
-}
-
-const searchStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  height: 50,
-  width: 800,
-  backgroundColor: '#FFFFFF',
-  fontSize: 20
-};
-
-const searchInputStyleMobile = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  height: 25,
-  width: 350,
-  padding: 10,
-  backgroundColor: '#FFFFFF',
-}
-
-const searchInputStyle = {
-  marginLeft: 10,
-  width: 750,
 }
 
 const buttonStyle = {

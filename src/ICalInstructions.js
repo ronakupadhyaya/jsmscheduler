@@ -4,11 +4,6 @@ import step1 from './cstep1.png';
 import step2 from './cstep2.png';
 import step3 from './cstep3.png';
 
-const containerStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-};
-
 const containerStyleMobile = {
   display: 'flex',
   flexDirection: 'column',
@@ -132,7 +127,7 @@ export default class ICalInstructions extends React.Component {
 
   renderContent = () => {
     const { step } = this.state;
-    if(step == 'Introduction') {
+    if(step === 'Introduction') {
       return (
         <div
           style={{
@@ -172,7 +167,7 @@ export default class ICalInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Open iCal') {
+    else if(step === 'Open iCal') {
       return (
         <div
           style={{
@@ -209,7 +204,7 @@ export default class ICalInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Select Import') {
+    else if(step === 'Select Import') {
       return (
         <div
           style={{
@@ -237,7 +232,7 @@ export default class ICalInstructions extends React.Component {
               Select Import
             </p>
           </div>
-          <img style={stepOneImageStyle} src={step1} />
+          <img style={stepOneImageStyle} src={step1} alt='Select Import' />
           <div
             style={{
               color: '#696868'
@@ -248,7 +243,7 @@ export default class ICalInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Select Calendar') {
+    else if(step === 'Select Calendar') {
       return (
         <div
           style={{
@@ -276,7 +271,7 @@ export default class ICalInstructions extends React.Component {
               Select Calendar
             </p>
           </div>
-          <img style={stepTwoImageStyle} src={step2} />
+          <img style={stepTwoImageStyle} src={step2} alt='Select Calendar' />
           <div
             style={{
               color: '#696868'
@@ -287,7 +282,7 @@ export default class ICalInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Click OK') {
+    else if(step === 'Click OK') {
       return (
         <div
           style={{
@@ -315,7 +310,7 @@ export default class ICalInstructions extends React.Component {
               Click OK
             </p>
           </div>
-          <img style={stepThreeImageStyle} src={step3} />
+          <img style={stepThreeImageStyle} src={step3} alt='Click OK' />
           <div
             style={{
               color: '#696868'
@@ -378,11 +373,11 @@ export default class ICalInstructions extends React.Component {
           marginLeft: 40,
         }}
       >
-        {step != 'Introduction' ? this.renderDiv('Introduction') : this.renderSelectedDiv('Introduction')}
-        {step != 'Open iCal' ? this.renderDiv('Open iCal') : this.renderSelectedDiv('Open iCal')}
-        {step != 'Select Import' ? this.renderDiv('Select Import') : this.renderSelectedDiv('Select Import')}
-        {step != 'Select Calendar' ? this.renderDiv('Select Calendar') : this.renderSelectedDiv('Select Calendar')}
-        {step != 'Click OK' ? this.renderDiv('Click OK') : this.renderSelectedDiv('Click OK')}
+        {step !=='Introduction' ? this.renderDiv('Introduction') : this.renderSelectedDiv('Introduction')}
+        {step !== 'Open iCal' ? this.renderDiv('Open iCal') : this.renderSelectedDiv('Open iCal')}
+        {step !== 'Select Import' ? this.renderDiv('Select Import') : this.renderSelectedDiv('Select Import')}
+        {step !== 'Select Calendar' ? this.renderDiv('Select Calendar') : this.renderSelectedDiv('Select Calendar')}
+        {step !== 'Click OK' ? this.renderDiv('Click OK') : this.renderSelectedDiv('Click OK')}
       </div>
     );
   }
@@ -415,7 +410,7 @@ export default class ICalInstructions extends React.Component {
           <div style={paragraphStyle}>
             Go to File>Import. In the Import section File field, browse to locate the calendar .ics file to import.
           </div>
-          <img style={stepOneImageStyleMobile} src={step1} />
+          <img style={stepOneImageStyleMobile} src={step1} alt='Select Import' />
 
           <div style={stepHeaderStyle}>
             Step 3: Select Calendar
@@ -423,12 +418,12 @@ export default class ICalInstructions extends React.Component {
           <div style={paragraphStyle}>
             Select an existing calendar or create a calendar to import the file.
           </div>
-          <img style={stepTwoImageStyleMobile} src={step2} />
+          <img style={stepTwoImageStyleMobile} src={step2} alt='Select Calendar' />
 
           <div style={stepHeaderStyle}>
             Step 3: Click OK
           </div>
-          <img style={stepThreeImageStyleMobile} src={step3} />
+          <img style={stepThreeImageStyleMobile} src={step3} alt='Click OK' />
         </div>
       </MediaQuery>
       <MediaQuery query="(min-device-width: 480px)">

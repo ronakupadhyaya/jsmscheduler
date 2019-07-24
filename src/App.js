@@ -1,20 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Home from './Home';
 import Result from './Result';
 import Calendar from './Calendar';
-import GoogleCalendarInstructions from './GoogleCalendarInstructions';
-import ICalInstructions from './ICalInstructions';
 import Instructions from './Instructions';
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
-    const { navigation } = this.props;
     return (
       <Router>
         <Route exact path="/" component={Home} />

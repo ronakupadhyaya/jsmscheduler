@@ -5,52 +5,17 @@ import step2 from './gcstep2.png';
 import step3 from './gcstep3.png';
 import step4 from './gcstep4.png';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import Typography from '@material-ui/core/Typography';
 
 const steps = ['Introduction', 'Open Google Calendar', 'Add Other Calendars', 'Select Import', 'Select Calendar', 'Import'];
-
-const containerStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-};
 
 const containerStyleMobile = {
   display: 'flex',
   flexDirection: 'column',
   margin: 25,
 };
-
-const headerStyle = {
-  marginTop: 50,
-  fontSize: 30,
-  marginBottom: 50,
-  textAlign: 'center',
-};
-
-const downloadStyle = {
-  fontSize: 15,
-  marginLeft: 20,
-  marginBottom: 5,
-  fontWeight: 'bold',
-};
-
-const paragraphStyle = {
-  fontSize: 15,
-  marginLeft: 20,
-  marginBottom: 5,
-}
-
-const stepHeaderStyle = {
-  fontSize: 30,
-  fontWeight: 'bold',
-  marginLeft: 20,
-  marginTop: 20,
-  marginBottom: 20,
-}
 
 const stepOneImageStyle = {
   margin: 50,
@@ -142,7 +107,7 @@ export default class GoogleCalendarInstructions extends React.Component {
 
   renderContent = () => {
     const { step } = this.state;
-    if(step == 'Introduction') {
+    if(step === 'Introduction') {
       return (
         <div
           style={{
@@ -182,7 +147,7 @@ export default class GoogleCalendarInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Open Google Calendar') {
+    else if(step === 'Open Google Calendar') {
       return (
         <div
           style={{
@@ -219,7 +184,7 @@ export default class GoogleCalendarInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Add Other Calendars') {
+    else if(step === 'Add Other Calendars') {
       return (
         <div
           style={{
@@ -248,7 +213,7 @@ export default class GoogleCalendarInstructions extends React.Component {
               Add Other Calendars
             </p>
           </div>
-          <img style={stepOneImageStyle} src={step1} />
+          <img style={stepOneImageStyle} src={step1} alt='Add Other Calendars' />
           <div
             style={{
               color: '#696868'
@@ -259,7 +224,7 @@ export default class GoogleCalendarInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Select Import') {
+    else if(step === 'Select Import') {
       return (
         <div
           style={{
@@ -288,7 +253,7 @@ export default class GoogleCalendarInstructions extends React.Component {
               Select Import
             </p>
           </div>
-          <img style={stepTwoImageStyle} src={step2} />
+          <img style={stepTwoImageStyle} src={step2} alt='Select Import' />
           <div
             style={{
               color: '#696868'
@@ -299,7 +264,7 @@ export default class GoogleCalendarInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Select Calendar') {
+    else if(step === 'Select Calendar') {
       return (
         <div
           style={{
@@ -327,7 +292,7 @@ export default class GoogleCalendarInstructions extends React.Component {
               Select Calendar
             </p>
           </div>
-          <img style={stepThreeImageStyle} src={step3} />
+          <img style={stepThreeImageStyle} src={step3} alt='Select Calendar' />
           <div
             style={{
               color: '#696868'
@@ -338,7 +303,7 @@ export default class GoogleCalendarInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Import') {
+    else if(step === 'Import') {
       return (
         <div
           style={{
@@ -366,7 +331,7 @@ export default class GoogleCalendarInstructions extends React.Component {
               Import
             </p>
           </div>
-          <img style={stepThreeImageStyle} src={step4} />
+          <img style={stepThreeImageStyle} src={step4} alt='Import' />
           <div
             style={{
               color: '#696868'
@@ -384,7 +349,7 @@ export default class GoogleCalendarInstructions extends React.Component {
 
   renderContentMobile = () => {
     const { step } = this.state;
-    if(step == 'Introduction') {
+    if(step === 'Introduction') {
       return (
         <div
           style={{
@@ -410,7 +375,7 @@ export default class GoogleCalendarInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Open Google Calendar') {
+    else if(step === 'Open Google Calendar') {
       return (
         <div
           style={{
@@ -433,7 +398,7 @@ export default class GoogleCalendarInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Add Other Calendars') {
+    else if(step === 'Add Other Calendars') {
       return (
         <div
           style={{
@@ -446,7 +411,7 @@ export default class GoogleCalendarInstructions extends React.Component {
               Add Other Calendars
             </p>
           </div>
-          <img style={stepOneImageStyleMobile} src={step1} />
+          <img style={stepOneImageStyleMobile} src={step1} alt='Add Other Calendars' />
           <div
             style={{
               color: '#696868'
@@ -457,7 +422,7 @@ export default class GoogleCalendarInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Select Import') {
+    else if(step === 'Select Import') {
       return (
         <div
           style={{
@@ -470,7 +435,7 @@ export default class GoogleCalendarInstructions extends React.Component {
               Select Import
             </p>
           </div>
-          <img style={stepTwoImageStyleMobile} src={step2} />
+          <img style={stepTwoImageStyleMobile} src={step2} alt='Select Import' />
           <div
             style={{
               color: '#696868'
@@ -481,7 +446,7 @@ export default class GoogleCalendarInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Select Calendar') {
+    else if(step === 'Select Calendar') {
       return (
         <div
           style={{
@@ -494,7 +459,7 @@ export default class GoogleCalendarInstructions extends React.Component {
               Select Calendar
             </p>
           </div>
-          <img style={stepThreeImageStyleMobile} src={step3} />
+          <img style={stepThreeImageStyleMobile} src={step3} alt='Select Calendar' />
           <div
             style={{
               color: '#696868'
@@ -505,7 +470,7 @@ export default class GoogleCalendarInstructions extends React.Component {
         </div>
       );
     }
-    else if(step == 'Import') {
+    else if(step === 'Import') {
       return (
         <div
           style={{
@@ -518,7 +483,7 @@ export default class GoogleCalendarInstructions extends React.Component {
               Import
             </p>
           </div>
-          <img style={stepThreeImageStyleMobile} src={step4} />
+          <img style={stepThreeImageStyleMobile} src={step4} alt='Import' />
           <div
             style={{
               color: '#696868'
@@ -581,12 +546,12 @@ export default class GoogleCalendarInstructions extends React.Component {
           marginLeft: 40,
         }}
       >
-        {step != 'Introduction' ? this.renderDiv('Introduction') : this.renderSelectedDiv('Introduction')}
-        {step != 'Open Google Calendar' ? this.renderDiv('Open Google Calendar') : this.renderSelectedDiv('Open Google Calendar')}
-        {step != 'Add Other Calendars' ? this.renderDiv('Add Other Calendars') : this.renderSelectedDiv('Add Other Calendars')}
-        {step != 'Select Import' ? this.renderDiv('Select Import') : this.renderSelectedDiv('Select Import')}
-        {step != 'Select Calendar' ? this.renderDiv('Select Calendar') : this.renderSelectedDiv('Select Calendar')}
-        {step != 'Import' ? this.renderDiv('Import') : this.renderSelectedDiv('Import')}
+        {step !== 'Introduction' ? this.renderDiv('Introduction') : this.renderSelectedDiv('Introduction')}
+        {step !== 'Open Google Calendar' ? this.renderDiv('Open Google Calendar') : this.renderSelectedDiv('Open Google Calendar')}
+        {step !== 'Add Other Calendars' ? this.renderDiv('Add Other Calendars') : this.renderSelectedDiv('Add Other Calendars')}
+        {step !== 'Select Import' ? this.renderDiv('Select Import') : this.renderSelectedDiv('Select Import')}
+        {step !== 'Select Calendar' ? this.renderDiv('Select Calendar') : this.renderSelectedDiv('Select Calendar')}
+        {step !== 'Import' ? this.renderDiv('Import') : this.renderSelectedDiv('Import')}
       </div>
     );
   }

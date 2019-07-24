@@ -2,12 +2,10 @@ import React from 'react';
 import MediaQuery from 'react-responsive';
 import EditableList from './EditableList';
 import Button from '@material-ui/core/Button';
-import SendIcon from '@material-ui/icons/Send';
 import Radio from '@material-ui/core/Radio';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import InputBase from '@material-ui/core/Input';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
@@ -39,25 +37,6 @@ const containerStyleMobile = {
   alignItems: 'center',
 }
 
-const headerStyle = {
-  marginTop: 50,
-  fontSize: 50,
-  // color: '#FFFFFF',
-  color: '#000000',
-  marginBottom: 25,
-}
-
-const headerStyleMobile = {
-  marginTop: 50,
-  fontSize: 25,
-  // color: '#FFFFFF',
-  color: '#000000',
-  marginBottom: 30,
-  paddingLeft: 5,
-  paddingRight: 5,
-  textAlign: 'center'
-}
-
 const listsStyle = {
   display: 'flex',
   flexDirection: 'row',
@@ -68,26 +47,6 @@ const listsStyleMobile = {
   display: 'flex',
   flexDirection: 'column',
   marginBottom: 40,
-}
-
-const listTitleStyle = {
-  marginLeft: 20,
-  fontSize: 15,
-  fontWeight: 'semi-bold',
-  textAlign: 'center',
-  // color: '#FFFFFF',
-  color: '#000000',
-  marginBottom: 10,
-}
-
-const listTitleStyleMobile = {
-  marginTop: 40,
-  fontSize: 15,
-  fontWeight: 'semi-bold',
-  textAlign: 'center',
-  // color: '#FFFFFF',
-  color: '#000000',
-  marginBottom: 10,
 }
 
 const suggestionStyle = {
@@ -175,42 +134,6 @@ const searchStyleContainerMobile = {
   width: '100vw'
 };
 
-const searchStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  height: 50,
-  width: 800,
-  backgroundColor: '#FFFFFF',
-};
-
-const searchStyleMobile = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  height: 40,
-  width: 350,
-  backgroundColor: '#FFFFFF',
-};
-
-const searchInputStyle = {
-  marginLeft: 10,
-  width: 750,
-};
-
-const searchInputStyleMobile = {
-  marginLeft: 10,
-  width: 750,
-};
-
-const searchButtonStyle = {
-  backgroundColor: '#2761AA',
-  fontSize: 10,
-  marginRight: 10,
-  marginLeft: 5,
-  color: '#FFFFFF'
-};
-
 const searchButtonStyleMobile = {
   backgroundColor: '#2761AA',
   fontSize: 10,
@@ -227,7 +150,7 @@ export default class Result extends React.Component {
     let citingAuthors = null;
     let coAuthors = null;
     let others = null;
-    if(this.props.location.previous && this.props.location.previous == 'home') {
+    if(this.props.location.previous && this.props.location.previous === 'home') {
       name = this.props.location.name;
       citingAuthors = [];
       citedAuthors = [];
@@ -269,13 +192,7 @@ export default class Result extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let name = null;
-    let citedAuthors = null;
-    let citingAuthors = null;
-    let coAuthors = null;
-    let others = null;
-    if(this.props.location.previous && this.props.location.previous == 'searchFirst' && this.props.location.name != prevProps.location.name) {
-      console.log('in');
+    if(this.props.location.previous && this.props.location.previous === 'searchFirst' && this.props.location.name !== prevProps.location.name) {
       let name = this.props.location.name;
       let citedAuthors = [];
       let citingAuthors = [];
@@ -304,14 +221,14 @@ export default class Result extends React.Component {
   fetchAuthorData = () => {
     const { name } = this.state;
     console.log(this.props.location.previous)
-    if(this.props.location.previous && (this.props.location.previous == 'home' || this.props.location.previous == 'searchFirst')) {
+    if(this.props.location.previous && (this.props.location.previous === 'home' || this.props.location.previous === 'searchFirst')) {
       fetch("http://citation-env.t9nubywtms.us-east-2.elasticbeanstalk.com/getAuthors?name=" + name)
       .then((response) => response.text())
       .then((responseText) => {
         const json = JSON.parse(responseText);
         var citedAuthors = json['Cited Authors'];
         var citingAuthors = json['Citing Authors'];
-        var coAuthors = [];
+        var coAuthors = json['Co Authors'];
 
         citedAuthors = citedAuthors.map(author => author.name);
         citedAuthors = citedAuthors.filter(author => !author.includes("null"));
@@ -350,16 +267,16 @@ export default class Result extends React.Component {
 
   generateSchedule = () => {
     const { selected } = this.state;
-    if(selected == 'Calendar View') {
+    if(selected === 'Calendar View') {
       this.openCalendarView();
     }
-    else if(selected == 'Google Calendar') {
+    else if(selected === 'Google Calendar') {
       this.openGoogleCalendarInstructions();
     }
-    else if(selected == 'iCal') {
+    else if(selected === 'iCal') {
       this.openiCalInstructions();
     }
-    else if(selected == 'Email') {
+    else if(selected === 'Email') {
       this.openDialog();
     }
   }
@@ -424,7 +341,7 @@ export default class Result extends React.Component {
   };
 
   addItem = (item, type) => {
-    if(type == 'Citing') {
+    if(type === 'Citing') {
       var citingAuthors = this.state.citingAuthors;
       citingAuthors.unshift(item);
       this.setState({
@@ -433,7 +350,7 @@ export default class Result extends React.Component {
       });
       localStorage.setItem('citingAuthors', JSON.stringify(citingAuthors));
     }
-    else if(type == 'Cited') {
+    else if(type === 'Cited') {
       var citedAuthors = this.state.citedAuthors;
       citedAuthors.unshift(item);
       this.setState({
@@ -442,7 +359,7 @@ export default class Result extends React.Component {
       });
       localStorage.setItem('citedAuthors', JSON.stringify(citedAuthors));
     }
-    else if(type == 'Co') {
+    else if(type === 'Co') {
       var coAuthors = this.state.coAuthors;
       coAuthors.unshift(item);
       this.setState({
@@ -463,7 +380,7 @@ export default class Result extends React.Component {
   }
 
   deleteItem = (toDeleteAuthor, type) => {
-    if(type == 'Citing') {
+    if(type === 'Citing') {
       var citingAuthors = this.state.citingAuthors;
       citingAuthors = citingAuthors.filter(author => author !== toDeleteAuthor);
       this.setState({
@@ -471,7 +388,7 @@ export default class Result extends React.Component {
       });
       localStorage.setItem('citingAuthors', JSON.stringify(citingAuthors));
     }
-    else if(type == 'Cited') {
+    else if(type === 'Cited') {
       var citedAuthors = this.state.citedAuthors;
       citedAuthors = citedAuthors.filter(author => author !== toDeleteAuthor);
       this.setState({
@@ -479,7 +396,7 @@ export default class Result extends React.Component {
       });
       localStorage.setItem('citedAuthors', JSON.stringify(citedAuthors));
     }
-    else if(type == 'Co') {
+    else if(type === 'Co') {
       var coAuthors = this.state.coAuthors;
       coAuthors = coAuthors.filter(author => author !== toDeleteAuthor);
       this.setState({
@@ -631,20 +548,40 @@ export default class Result extends React.Component {
     });
   }
 
+  onEmailChange = (email) => {
+    this.setState({
+      email
+    })
+  }
+
+  sendEmail = () => {
+    const { citingAuthors, citedAuthors, coAuthors, others, name, email } = this.state;
+    const authors = citingAuthors.concat(citedAuthors).concat(coAuthors).concat(others);
+    fetch("http://citation-env.t9nubywtms.us-east-2.elasticbeanstalk.com/EmailSender", {
+      method: 'POST',
+      body: JSON.stringify({
+        authors: authors,
+        name: name,
+        email: email,
+      })
+    })
+    .then(response => console.log(response))
+    .catch(error => console.error(error));
+  }
+
   render() {
     const { selected,
       citingAuthors,
       citedAuthors,
       coAuthors,
       others,
-      citingAuthorsItem,
-      citedAuthorsItem,
-      othersItem,
       loading,
       name,
       suggestions,
       dialogOpen,
     } = this.state;
+
+    const email = this.state.email || '';
 
     const inputProps = {
       placeholder: 'Your Name (First Last)',
@@ -698,9 +635,6 @@ export default class Result extends React.Component {
         </div>
       );
     }
-    const header = (name && name !== 'undefined') ?
-    (name.split(" ")[0] + ', here are the people we think you\'d like to hear') :
-    ('Here are the people we think you\'d like to hear');
 
     return (
       <div>
@@ -754,39 +688,40 @@ export default class Result extends React.Component {
           </div>
             <div style={listsStyleMobile}>
               <div>
-                <div style={listTitleStyleMobile}>People who cite you a lot</div>
                   <EditableList
                   type='Citing'
                   authors={citingAuthors}
                   addItem={this.addItem}
                   deleteItem={this.deleteItem}
+                  title='People who cite you/your co authors a lot'
                   />
                 </div>
                 <div>
-                  <div style={listTitleStyleMobile}>People you cite a lot</div>
                     <EditableList
                     type='Cited'
                     authors={citedAuthors}
                     addItem={this.addItem}
                     deleteItem={this.deleteItem}
+                    title='People you/your co authors cite a lot'
                     />
                 </div>
                 <div>
-                  <div style={listTitleStyleMobile}>Co Authors</div>
                     <EditableList
                     type='Co'
                     authors={coAuthors}
                     addItem={this.addItem}
                     deleteItem={this.deleteItem}
+                    title='Co Authors'
                     />
                 </div>
                 <div>
-                  <div style={listTitleStyleMobile}>Others</div>
                     <EditableList
                     type='Other'
                     authors={others}
                     addItem={this.addItem}
                     deleteItem={this.deleteItem}
+                    showAddItem
+                    title='Others'
                     />
                 </div>
             </div>
@@ -794,7 +729,7 @@ export default class Result extends React.Component {
               <div>
                 <Radio
                   style={radioStyle}
-                  checked={selected == 'Calendar View'}
+                  checked={selected === 'Calendar View'}
                   icon={<RadioButtonUncheckedIcon fontSize="small" />}
                   checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
                   onChange={() => this.setRadioButtonChange('Calendar View')}
@@ -802,7 +737,7 @@ export default class Result extends React.Component {
                 Calendar View
                 <Radio
                   style={radioStyle}
-                  checked={selected == 'Email'}
+                  checked={selected === 'Email'}
                   icon={<RadioButtonUncheckedIcon fontSize="small" />}
                   checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
                   onChange={() => this.setRadioButtonChange('Email')}
@@ -831,13 +766,15 @@ export default class Result extends React.Component {
                     label="Email Address"
                     type="email"
                     fullWidth
+                    value={email}
+                    onChange={event => this.onEmailChange(event.target.value)}
                   />
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={this.closeDialog} color="primary">
                     Cancel
                   </Button>
-                  <Button onClick={this.closeDialog} color="primary">
+                  <Button onClick={this.sendEmail} color="primary">
                     OK
                   </Button>
                 </DialogActions>
@@ -907,39 +844,40 @@ export default class Result extends React.Component {
             </div>
             <div style={listsStyle}>
               <div>
-                <div style={listTitleStyle}>People who cite you a lot</div>
                 <EditableList
                 type='Citing'
                 authors={citingAuthors}
                 addItem={this.addItem}
                 deleteItem={this.deleteItem}
+                title='People who cite you/your co authors a lot'
                 />
               </div>
               <div>
-                <div style={listTitleStyle}>People you cite a lot</div>
                 <EditableList
                 type='Cited'
                 authors={citedAuthors}
                 addItem={this.addItem}
                 deleteItem={this.deleteItem}
+                title='People you/your co authors cite a lot'
                 />
               </div>
               <div>
-                <div style={listTitleStyle}>Co Authors</div>
                 <EditableList
                 type='Co'
                 authors={coAuthors}
                 addItem={this.addItem}
                 deleteItem={this.deleteItem}
+                title='Co Authors'
                 />
               </div>
               <div>
-                <div style={listTitleStyle}>Others</div>
                 <EditableList
                 type='Other'
                 authors={others}
                 addItem={this.addItem}
                 deleteItem={this.deleteItem}
+                showAddItem
+                title='Others'
                 />
               </div>
             </div>
@@ -955,7 +893,7 @@ export default class Result extends React.Component {
               <div>
               <Radio
                 style={radioStyle}
-                checked={selected == 'Calendar View'}
+                checked={selected === 'Calendar View'}
                 icon={<RadioButtonUncheckedIcon fontSize="small" />}
                 checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
                 onChange={() => this.setRadioButtonChange('Calendar View')}
@@ -963,7 +901,7 @@ export default class Result extends React.Component {
               Calendar View
               <Radio
                 style={radioStyle}
-                checked={selected == 'Google Calendar'}
+                checked={selected === 'Google Calendar'}
                 icon={<RadioButtonUncheckedIcon fontSize="small" />}
                 checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
                 onChange={() => this.setRadioButtonChange('Google Calendar')}
@@ -971,7 +909,7 @@ export default class Result extends React.Component {
               Google Calendar
               <Radio
                 style={radioStyle}
-                checked={selected == 'iCal'}
+                checked={selected === 'iCal'}
                 icon={<RadioButtonUncheckedIcon fontSize="small" />}
                 checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
                 onChange={() => this.setRadioButtonChange('iCal')}
@@ -979,7 +917,7 @@ export default class Result extends React.Component {
               iCal
               <Radio
                 style={radioStyle}
-                checked={selected == 'Text'}
+                checked={selected === 'Text'}
                 icon={<RadioButtonUncheckedIcon fontSize="small" />}
                 checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
                 onChange={() => this.setRadioButtonChange('Text')}
