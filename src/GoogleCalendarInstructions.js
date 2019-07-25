@@ -63,7 +63,6 @@ export default class GoogleCalendarInstructions extends React.Component {
 
   componentWillMount() {
     const { authors } = this.props;
-    return;
     fetch("http://citation-env.t9nubywtms.us-east-2.elasticbeanstalk.com/getSpeakerCalendar", {
       method: 'POST',
       body: JSON.stringify({

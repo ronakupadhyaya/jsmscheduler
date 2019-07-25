@@ -276,6 +276,9 @@ export default class Result extends React.Component {
     else if(selected === 'iCal') {
       this.openiCalInstructions();
     }
+    else if(selected === 'Text') {
+      this.openTextInstructions();
+    }
     else if(selected === 'Email') {
       this.openDialog();
     }
@@ -565,8 +568,16 @@ export default class Result extends React.Component {
         email: email,
       })
     })
-    .then(response => console.log(response))
-    .catch(error => console.error(error));
+    .then(response => {
+      this.setState({
+        dialogOpen: false
+      });
+    })
+    .catch(error => {
+      this.setState({
+        dialogOpen: false
+      });
+    });
   }
 
   render() {
