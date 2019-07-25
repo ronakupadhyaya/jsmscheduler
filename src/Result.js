@@ -231,13 +231,13 @@ export default class Result extends React.Component {
         var coAuthors = json['Co Authors'];
 
         citedAuthors = citedAuthors.map(author => author.name);
-        citedAuthors = citedAuthors.filter(author => !author.includes("null"));
+        citedAuthors = citedAuthors.filter(author => !author.includes("null") && author !== "");
 
         citingAuthors = citingAuthors.map(author => author.name);
-        citingAuthors = citingAuthors.filter(author => !author.includes("null"));
+        citingAuthors = citingAuthors.filter(author => !author.includes("null") && author !== "");
 
         coAuthors = coAuthors.map(author => author.name);
-        coAuthors = coAuthors.filter(author => !author.includes("null"));
+        coAuthors = coAuthors.filter(author => !author.includes("null") && author !== "");
 
         this.setState({
           citingAuthors: citingAuthors,
