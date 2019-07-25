@@ -560,6 +560,9 @@ export default class Result extends React.Component {
   sendEmail = () => {
     const { citingAuthors, citedAuthors, coAuthors, others, name, email } = this.state;
     const authors = citingAuthors.concat(citedAuthors).concat(coAuthors).concat(others);
+    this.setState({
+      dialogOpen: false
+    });
     fetch("http://citation-env.t9nubywtms.us-east-2.elasticbeanstalk.com/EmailSender", {
       method: 'POST',
       body: JSON.stringify({
@@ -704,7 +707,7 @@ export default class Result extends React.Component {
                   authors={citingAuthors}
                   addItem={this.addItem}
                   deleteItem={this.deleteItem}
-                  title='People who cite you/your co authors a lot'
+                  title='People who cite you/coauthors a lot'
                   />
                 </div>
                 <div>
@@ -713,7 +716,7 @@ export default class Result extends React.Component {
                     authors={citedAuthors}
                     addItem={this.addItem}
                     deleteItem={this.deleteItem}
-                    title='People you/your co authors cite a lot'
+                    title='People you/coauthors cite a lot'
                     />
                 </div>
                 <div>
@@ -722,7 +725,7 @@ export default class Result extends React.Component {
                     authors={coAuthors}
                     addItem={this.addItem}
                     deleteItem={this.deleteItem}
-                    title='Co Authors'
+                    title='Coauthors'
                     />
                 </div>
                 <div>
@@ -851,7 +854,7 @@ export default class Result extends React.Component {
               </div>
             </div>
             <div style={suggestionStyle}>
-              Feel free to add or remove any names before generating your schedule
+              Based on your publications, we think the talks of these people will be relevant to you.  Feel free to add or remove any names before generating your schedule.
             </div>
             <div style={listsStyle}>
               <div>
@@ -860,7 +863,7 @@ export default class Result extends React.Component {
                 authors={citingAuthors}
                 addItem={this.addItem}
                 deleteItem={this.deleteItem}
-                title='People who cite you/your co authors a lot'
+                title='People who cite you/coauthors a lot'
                 />
               </div>
               <div>
@@ -869,7 +872,7 @@ export default class Result extends React.Component {
                 authors={citedAuthors}
                 addItem={this.addItem}
                 deleteItem={this.deleteItem}
-                title='People you/your co authors cite a lot'
+                title='People you/coauthors cite a lot'
                 />
               </div>
               <div>
@@ -878,7 +881,7 @@ export default class Result extends React.Component {
                 authors={coAuthors}
                 addItem={this.addItem}
                 deleteItem={this.deleteItem}
-                title='Co Authors'
+                title='Coauthors'
                 />
               </div>
               <div>
