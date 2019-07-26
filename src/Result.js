@@ -59,6 +59,16 @@ const suggestionStyle = {
   marginBottom: 25,
 }
 
+const suggestionStyleMobile = {
+  marginTop: 20,
+  fontSize: 15,
+  fontWeight: 'semi-bold',
+  textAlign: 'center',
+  // color: '#FFFFFF',
+  color: '#000000',
+  marginBottom: 25,
+}
+
 const footerStyle = {
   display: 'flex',
   flexDirection: 'row',
@@ -583,8 +593,17 @@ export default class Result extends React.Component {
     });
   }
 
+  getMessageText =() => {
+    const { citingAuthors, citedAuthors, coAuthors } = this.state;
+    if(citingAuthors.length === 0 && citedAuthors.length === 0 && coAuthors.length === 0) {
+      return "We were unable to find you.  Make sure you have entered your name as it appears in the JSM program or else you can put in the name of someone with similar research interests to your own."
+    }
+    return "Based on your publications, we think the talks of these people will be relevant to you.  Feel free to add or remove any names before generating your schedule.";
+  }
+
   render() {
-    const { selected,
+    const {
+      selected,
       citingAuthors,
       citedAuthors,
       coAuthors,
@@ -700,6 +719,9 @@ export default class Result extends React.Component {
             }}
           />
           </div>
+          <div style={suggestionStyleMobile}>
+            {this.getMessageText()}
+          </div>
             <div style={listsStyleMobile}>
               <div>
                   <EditableList
@@ -707,7 +729,7 @@ export default class Result extends React.Component {
                   authors={citingAuthors}
                   addItem={this.addItem}
                   deleteItem={this.deleteItem}
-                  title='People who cite you/coauthors a lot'
+                  title='People who cite you/coauthors the most'
                   />
                 </div>
                 <div>
@@ -716,7 +738,7 @@ export default class Result extends React.Component {
                     authors={citedAuthors}
                     addItem={this.addItem}
                     deleteItem={this.deleteItem}
-                    title='People you/coauthors cite a lot'
+                    title='People you/coauthors cite the most'
                     />
                 </div>
                 <div>
@@ -854,7 +876,7 @@ export default class Result extends React.Component {
               </div>
             </div>
             <div style={suggestionStyle}>
-              Based on your publications, we think the talks of these people will be relevant to you.  Feel free to add or remove any names before generating your schedule.
+              {this.getMessageText()}
             </div>
             <div style={listsStyle}>
               <div>
@@ -863,7 +885,7 @@ export default class Result extends React.Component {
                 authors={citingAuthors}
                 addItem={this.addItem}
                 deleteItem={this.deleteItem}
-                title='People who cite you/coauthors a lot'
+                title='People who cite you/coauthors the most'
                 />
               </div>
               <div>
@@ -872,7 +894,7 @@ export default class Result extends React.Component {
                 authors={citedAuthors}
                 addItem={this.addItem}
                 deleteItem={this.deleteItem}
-                title='People you/coauthors cite a lot'
+                title='People you/coauthors cite the most'
                 />
               </div>
               <div>

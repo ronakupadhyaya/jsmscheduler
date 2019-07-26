@@ -6,6 +6,7 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import MenuItem from '@material-ui/core/MenuItem';
 import { attendees } from './attendees';
+import Link from '@material-ui/core/Link';
 
 const containerStyle = {
   display: 'flex',
@@ -269,6 +270,23 @@ export default class Home extends React.Component {
               Search
             </div>
           </Button>
+          <div
+            style={{
+              color: '#FFFFFF',
+              display: 'flex',
+              flexDirection: 'row',
+              marginTop: 'auto',
+              width: '100%',
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 15
+            }}
+          >
+            <div>
+              Brought to you by <Link style={{ textDecoration: 'underline' }} target="_blank" color="inherit" href="http://faculty.marshall.usc.edu/Jacob-Bien/">Jacob Bien</Link> and <Link style={{ textDecoration: 'underline' }} target="_blank" color="inherit" href="https://www.linkedin.com/in/ronakupadhyaya/">Ronak Upadhyaya</Link>
+            </div>
+          </div>
         </div>
       </MediaQuery>
       <MediaQuery query="(min-device-width: 480px)">
@@ -330,6 +348,27 @@ export default class Home extends React.Component {
                 },
               }}
             />
+          </div>
+          <div
+            style={{
+              color: '#FFFFFF',
+              display: 'flex',
+              flexDirection: 'row',
+              marginTop: 'auto',
+              width: '100%',
+              height: 30,
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              fontSize: 15
+            }}
+          >
+            <div
+                style={{
+                  marginRight: 20
+                }}
+            >
+              Brought to you by <Link style={{ textDecoration: 'underline' }} target="_blank" color="inherit" href="http://faculty.marshall.usc.edu/Jacob-Bien/">Jacob Bien</Link> and <Link style={{ textDecoration: 'underline' }} target="_blank" color="inherit" href="https://www.linkedin.com/in/ronakupadhyaya/">Ronak Upadhyaya</Link>
+            </div>
           </div>
         </div>
       </MediaQuery>
